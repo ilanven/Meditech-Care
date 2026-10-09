@@ -1,0 +1,1 @@
+Pour tester de merge dans le main depuis une autre branche que 'develop', et voir si c'est bien refusé
