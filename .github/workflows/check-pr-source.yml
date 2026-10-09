@@ -1,0 +1,19 @@
+name: Check PR on main from develop
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-source:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify source branch
+        run: |
+          if [[ "$HEAD_REF" != "develop" ]]; then
+            echo "::error::Only develop can be merged into main"
+            exit 1
+          fi
+        env:
+          HEAD_REF: ${{ github.head_ref }}
