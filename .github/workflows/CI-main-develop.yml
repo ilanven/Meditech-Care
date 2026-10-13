@@ -1,0 +1,56 @@
+name: Run Symfony QA before merging into develop or main
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+  push:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    name: Vérification de qualité
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer PHP et Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, intl
+          coverage: none
+          tools: composer:v2
+
+      - name: Vérifier composer.json
+        run: composer validate --strict --no-check-publish
+
+      - name: Installer les dépendances (dont require-dev)
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Vérifier le style (sans modifier les fichiers)
+        run: vendor/bin/php-cs-fixer fix --dry-run --diff
+
+      - name: Analyser le code avec PHPStan
+        run: vendor/bin/phpstan analyse src --level=5 --no-progress
+
+      - name: Vérifier la syntaxe des fichiers PHP
+        run: find src -type f -name '*.php' -print0 | xargs -0 -r -n1 php -l
+
+      - name: Vérifier la configuration YAML Symfony
+        run: php bin/console lint:yaml config/
+
+      - name: Vérifier la configuration YAML des workflows GitHub Actions
+        run: php bin/console lint:yaml .github/workflows/
+
+      - name: Vérifier la configuration TWIG Symfony
+        run: php bin/console lint:twig templates/
+
