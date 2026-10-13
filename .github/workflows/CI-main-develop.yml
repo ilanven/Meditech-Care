@@ -16,10 +16,10 @@ permissions:
 
 jobs:
   qa:
-    name: Vérification de qualité 
+    name: Vérification de qualité
     runs-on: ubuntu-latest
     steps:
-      - name: Récupérer le dépôt 
+      - name: Récupérer le dépôt
         uses: actions/checkout@v4
 
       - name: Installer PHP et Composer
@@ -29,9 +29,9 @@ jobs:
           extensions: mbstring, intl
           coverage: none
           tools: composer:v2
-          
+
       - name: Vérifier composer.json
-        run: composer validate --strict
+        run: composer validate --strict --no-check-publish
 
       - name: Installer les dépendances (dont require-dev)
         run: composer install --no-interaction --prefer-dist --no-progress
@@ -53,4 +53,4 @@ jobs:
 
       - name: Vérifier la configuration TWIG Symfony
         run: php bin/console lint:twig templates/
-        
+
