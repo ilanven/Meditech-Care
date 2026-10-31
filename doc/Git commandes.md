@@ -1,64 +1,63 @@
 # Git — Workflow et commandes de Meditech Care
 
-> **But de cette page :** retrouver rapidement la bonne commande selon l'étape où l'on se trouve. Toutes les commandes sont à lancer depuis le dossier du projet, dans un terminal.
->
-> Les exemples utilisent `feat/equipements` comme branche de travail. Remplacez ce nom par celui de votre tâche.
+> **But de cette page :** retrouver rapidement la bonne commande selon l'étape de notre workflow. Toutes les commandes sont à lancer depuis le dossier du projet, dans un terminal.
 
-## 0. Comprendre nos branches
+> Les exemples utilisent `feat/equipements` comme branche de travail. Remplacer ce nom par celui de la tâche en cours.
+
+## 0. Le nommage de nos branches
 
 | Branche | Rôle | Règle |
 | --- | --- | --- |
 | `main` | Versions importantes et fonctionnelles | Mise à jour peu fréquente, uniquement par PR depuis `develop`. |
 | `develop` | Référence commune du développement | Mise à jour par PR validée, jamais de développement direct. |
-| `feat/...` | Nouvelle fonctionnalité | Créée depuis `develop`. |
-| `fix/...` | Correction d'un problème | Créée depuis `develop`. |
-| `doc/...` | Documentation | Créée depuis `develop`. |
+| `feat/...` | Nouvelle fonctionnalité | Branche créée depuis `develop`. |
+| `fix/...` | Correction d'un problème | Branche créée depuis `develop`. |
+| `doc/...` | Documentation | Branche créée depuis `develop`. |
 
-**Circuit habituel :** `develop` → branche `feat/...`, `fix/...` ou `doc/...` → Pull Request (PR) vers `develop` → revue par l'autre membre + CI → fusion → suppression de la branche.
+**Notre workflow :** `develop` → branche `feat/...` → Pull Request (PR) vers `develop` → revue par l'autre membre du binôme + CI → fusion → suppression de la branche.
 
-**Livraison :** quand une version importante est prête, ouvrir une PR **`develop` → `main`**. Aucune autre branche ne doit faire de PR vers `main`.
+**Livraison :** lorsqu'une version importante est prête, ouvrir une PR de **`develop` vers `main`**. Aucune autre branche ne doit faire de PR vers `main`.
 
 **Trois repères :**
-- **Local** : votre copie sur l'ordinateur ; **distant** (`origin`) : le dépôt GitHub.
-- **Commit** : enregistre une étape dans l'historique local ; **push** : envoie vos commits sur GitHub.
-- **PR** : propose de fusionner une branche et permet de relire le code avant validation.
 
-## 1. Je commence une nouvelle tâche
+- **Local** : copie du projet sur l'ordinateur ; **distant** (`origin`) : dépôt GitHub.
+- **Commit** : enregistrement d'une étape dans l'historique local ; **push** : envoi des commits sur GitHub.
+- **PR** : proposition de fusion entre deux branches, permettant de relire le code avant validation.
 
-**Avant de commencer :** vérifiez que vous n'avez pas de modifications en cours à conserver sur la branche actuelle.
+## 1. Créer une nouvelle branche
+
+**Avant de commencer :** vérifier qu'aucune modification en cours sur la branche actuelle ne risque d'être perdue ou déplacée.
 
 ```bash
 git status
 ```
 
-Si des modifications non committées apparaissent, terminez-les par un commit **sur la branche de travail appropriée** ou reportez-vous à [Je dois changer de branche avec du travail en cours](#5-je-dois-changer-de-branche-avec-du-travail-en-cours). Ne changez pas de branche machinalement.
+Si des modifications non commitées apparaissent, les enregistrer dans un commit **avant de changer de branche**. Si elles ne sont pas encore prêtes à être commitées (code à l'état de brouillon, par exemple), les mettre temporairement de côté avec un **stash** : voir la section [Changer de branche avec des modifications non commitées](#5-changer-de-branche-avec-des-modifications-non-commitées). Ne pas changer de branche machinalement.
 
 **Étape 1 — Mettre `develop` à jour :**
 
 ```bash
 git switch develop
-git pull --ff-only origin develop
+git pull
 ```
 
-`--ff-only` évite de créer involontairement un commit de fusion lors du `pull`. En cas d'erreur, ne forcez pas : vérifiez `git status` et demandez de l'aide si les historiques divergent.
-
-**Étape 2 — Créer sa branche et s'y placer :**
+**Étape 2 — Créer une branche et s'y placer :**
 
 ```bash
 git switch -c feat/equipements
 ```
 
-Utilisez `fix/...` pour une correction ou `doc/...` pour la documentation. Préférez des noms courts, explicites, en minuscules et avec des tirets.
+Utiliser `fix/...` pour une correction ou `doc/...` pour la documentation. Préférer des noms courts et explicites, en minuscules et avec des tirets.
 
-**Vérifier :**
+**Vérifier la branche active :**
 
 ```bash
 git branch --show-current
 ```
 
-Vous devez être sur votre nouvelle branche, **pas sur `develop`**.
+Le résultat doit correspondre à la nouvelle branche, **pas à `develop`**.
 
-## 2. Je code et j'enregistre mon travail
+## 2. Coder et enregistrer son travail
 
 **Voir ce qui a changé :**
 
@@ -74,7 +73,7 @@ git add src/Controller/EquipementController.php
 git commit -m "feat: ajout du contrôleur des équipements"
 ```
 
-Adaptez le chemin aux fichiers modifiés. `git add .` peut être utilisé si **tous** les changements du dossier sont voulus ; contrôlez d'abord `git status` pour ne pas ajouter de fichiers accidentellement.
+Adapter le chemin aux fichiers modifiés. Utiliser `git add .` uniquement si **tous** les changements du dossier doivent être ajoutés. Vérifier d'abord avec `git status` pour éviter d'inclure des fichiers accidentellement.
 
 **Envoyer la branche sur GitHub (première fois) :**
 
@@ -82,19 +81,19 @@ Adaptez le chemin aux fichiers modifiés. `git add .` peut être utilisé si **t
 git push -u origin feat/equipements
 ```
 
-**Envois suivants, sur la même branche :**
+**Pour les envois suivants, sur la même branche :**
 
 ```bash
 git push
 ```
 
-> Un commit n'a pas besoin de contenir toute une fonctionnalité. Faites plusieurs commits compréhensibles au fil du travail. Ne commitez pas de secrets (`.env.local`, mots de passe, jetons…).
+> Un commit n'a pas besoin de contenir toute une fonctionnalité. Faire plusieurs commits compréhensibles au fil du travail. Ne jamais commiter de secrets (`.env.local`, mots de passe, jetons…).
 
-## 3. `develop` a changé pendant que je travaillais
+## 3. Intégrer les changements de `develop` pendant le travail
 
-Si l'autre personne a fusionné du code dans `develop`, il peut être utile ou nécessaire de l'intégrer avant la fusion de votre PR. **Vous restez sur votre branche de travail.**
+Si l'autre membre du binôme a fusionné du code dans `develop`, il peut être utile ou nécessaire de récupérer ces changements avant la fusion de la PR. **Rester sur sa branche de travail pour effectuer cette opération.**
 
-**Précondition :** faites un commit de vos changements locaux ou mettez-les temporairement de côté (voir [étape 5](#5-je-dois-changer-de-branche-avec-du-travail-en-cours)).
+**Précondition :** commiter les changements locaux ou les mettre temporairement de côté (voir [étape 5](#5-changer-de-branche-avec-des-modifications-non-commitées)).
 
 ```bash
 git switch feat/equipements
@@ -102,96 +101,95 @@ git fetch origin
 git merge origin/develop
 ```
 
-- `fetch` récupère les nouvelles références distantes sans modifier vos fichiers.
-- `merge origin/develop` intègre les modifications de `develop` dans **votre branche actuelle**.
-- Si Git ne signale aucun conflit, vérifiez le résultat et faites `git push` si votre branche est déjà publiée.
+- `fetch` : récupérer les nouvelles références distantes sans modifier les fichiers locaux.
+- `merge origin/develop` : intégrer les modifications de `develop` dans **la branche actuellement active**.
+- Si aucun conflit n'est signalé : vérifier le résultat, puis lancer `git push` si la branche a déjà été publiée.
 
 **Si Git signale des conflits :**
 
-1. Tapez `git status` pour repérer les fichiers concernés.
-2. Ouvrez ces fichiers et choisissez le contenu final correct. Supprimez les marqueurs `<<<<<<<`, `=======`, `>>>>>>>` s'ils apparaissent.
-3. Vérifiez le code et, si possible, lancez les tests.
-4. Terminez la fusion :
+1. Lancer `git status` pour repérer les fichiers concernés.
+2. Ouvrir ces fichiers et choisir le contenu final correct. Supprimer les marqueurs `<<<<<<<`, `=======` et `>>>>>>>` s'ils apparaissent.
+3. Vérifier le code et, si possible, lancer les tests.
+4. Terminer la fusion :
 
-```bash
-git add chemin/du/fichier-resolu.php
-git merge --continue
-git push
-```
+   ```bash
+   git add chemin/du/fichier-resolu.php
+   git merge --continue
+   git push
+   ```
 
-Si le merge est trop compliqué et que vous **n'avez pas encore commencé à résoudre les conflits**, vous pouvez revenir à l'état précédant le merge avec `git merge --abort` (voir les commandes complémentaires).
+Si le merge est trop compliqué et que **la résolution des conflits n'a pas encore commencé**, revenir à l'état précédant le merge avec `git merge --abort` (voir les commandes complémentaires).
 
-> **Une actualisation n'est pas obligatoire avant toute PR.** Elle devient importante si des conflits existent, si les vérifications GitHub exigent une branche à jour ou si les nouvelles modifications sont nécessaires à votre travail.
+> **Actualiser sa branche avant chaque PR n'est pas obligatoire.** Cela devient important en cas de conflits, si les contrôles GitHub exigent une branche à jour ou si les nouvelles modifications sont nécessaires au travail en cours.
 
-## 4. Ma fonctionnalité est prête : Pull Request et fusion
+## 4. Terminer une fonctionnalité : Pull Request et fusion
 
-1. Vérifiez les changements, exécutez les contrôles disponibles et envoyez les derniers commits :
+1. **Vérifier les changements**, exécuter les contrôles disponibles et envoyer les derniers commits :
 
    ```bash
    git status
    git push
    ```
 
-2. Sur GitHub, ouvrez une **Pull Request de `feat/equipements` vers `develop`** (attention au sens : *base* = `develop`, *compare* = votre branche).
-3. Décrivez la modification et demandez une revue à l'autre membre du binôme.
-4. Attendez la validation de la PR et la réussite des contrôles CI requis. Si des corrections sont demandées, effectuez-les sur **la même branche**, puis faites de nouveaux commits et `git push` : la PR se mettra à jour automatiquement.
-5. Fusionnez la PR sur GitHub seulement après la revue requise et les contrôles obligatoires. Supprimez ensuite la branche distante depuis GitHub dans la plupart des cas.
+2. **Ouvrir une Pull Request sur GitHub** de **`feat/equipements` vers `develop`**. Attention au sens : *base* = `develop`, *compare* = la branche de travail.
+3. **Décrire la modification** et demander une revue à l'autre membre du binôme.
+4. **Attendre l'approbation de la PR** et la réussite des contrôles CI requis. Si des corrections sont demandées, les effectuer sur **la même branche**, puis créer de nouveaux commits et faire `git push` : la PR se met automatiquement à jour.
+5. **Fusionner la PR sur GitHub** uniquement après la revue requise et les contrôles obligatoires. Supprimer ensuite la branche distante depuis GitHub, sauf si elle doit encore servir.
 
-**Après la fusion, sur votre ordinateur :**
+**Après la fusion, sur l'ordinateur :**
 
 ```bash
 git switch develop
-git pull --ff-only origin develop
+git pull
 git branch -d feat/equipements
 ```
 
-`git branch -d` supprime **uniquement la branche locale** et protège contre la suppression d'une branche non fusionnée selon l'historique local. Si Git refuse alors que la PR a été fusionnée avec **Squash and merge**, vérifiez d'abord que la PR est bien intégrée ; ne forcez pas la suppression sans comprendre le message.
+`git branch -d` supprime **uniquement la branche locale** et empêche certaines suppressions de branches non fusionnées, selon l'historique Git local. Si Git refuse alors que la PR a été fusionnée avec **Squash and merge**, vérifier d'abord que les modifications ont bien été intégrées. Ne pas forcer la suppression sans comprendre le message.
 
-**Pour démarrer une nouvelle tâche**, repartez de l'[étape 1](#1-je-commence-une-nouvelle-tache).
+**Pour démarrer une nouvelle tâche :** reprendre à l'[étape 1](#1-créer-une-nouvelle-branche).
 
-## 5. Je dois changer de branche avec du travail en cours
+## 5. Changer de branche avec des modifications non commitées
 
-**Commencez toujours par :**
+**Toujours commencer par :**
 
 ```bash
 git status
 ```
 
-- **Aucun changement local :** `git switch nom-de-la-branche` suffit.
-- **Travail prêt à être enregistré :** préférez un `git add` puis un `git commit`, sur la bonne branche.
-- **Travail incomplet à mettre temporairement de côté :** utilisez `stash`.
+- **Aucun changement local :** utiliser directement `git switch nom-de-la-branche`.
+- **Travail prêt à être enregistré :** faire un `git add`, puis un `git commit` sur la bonne branche.
+- **Travail incomplet à mettre temporairement de côté :** utiliser `stash`:
 
-**Mettre de côté les fichiers modifiés et les nouveaux fichiers non suivis :**
+**Mettre de côté les fichiers modifiés et les nouveaux fichiers non suivis (stash) :**
 
 ```bash
-git stash push -u -m "Travail en cours sur les équipements"
+git stash push -u -m "Travail en cours..."
 git switch develop
 ```
 
-Quand vous avez terminé votre interruption :
+**Une fois l'interruption terminée, reprendre le travail :**
 
 ```bash
 git switch feat/equipements
 git stash pop
 ```
 
-`stash pop` réapplique les modifications puis retire le stash **si l'opération réussit**. En cas de conflit, résolvez-le avant de poursuivre ; le stash peut être conservé.
+`stash pop` réapplique les modifications, puis retire le stash **si l'opération réussit**. En cas de conflit, résoudre celui-ci avant de poursuivre ; le stash peut être conservé.
 
-> **Le stash n'est jamais systématique.** Git peut parfois laisser changer de branche malgré des fichiers modifiés et transporter ces modifications avec vous : cela prête à confusion. Notre convention est de changer de branche avec un répertoire de travail propre autant que possible.
+> **Le stash n'est pas systématique.** Git peut parfois autoriser un changement de branche malgré des fichiers modifiés et déplacer ces modifications avec le changement de branche, ce qui peut prêter à confusion. Notre convention : autant que possible, changer de branche avec un répertoire de travail propre.
 
 ## 6. Problèmes courants : que faire ?
 
 | Situation | Premier réflexe | Suite |
 | --- | --- | --- |
 | « Je ne sais plus sur quelle branche je suis » | `git status` | Vérifier la ligne `On branch ...` et les fichiers modifiés. |
-| « Git refuse `switch` à cause de modifications locales » | `git status` | Commit sur la branche correcte ou `stash` (étape 5), puis `switch`. |
-| « Mon `pull --ff-only` est refusé » | `git status` puis `git branch --show-current` | Ne pas forcer : vérifier si un commit local a été créé par erreur sur `develop`. |
-| « `develop` a changé et ma PR a des conflits » | `git fetch origin` | Fusionner `origin/develop` dans sa branche et résoudre les conflits (étape 3). |
-| « J'ai corrigé du code après avoir ouvert la PR » | Rester sur la branche de la PR | Commit puis `git push` : inutile de créer une nouvelle PR. |
-| « J'ai oublié si mes commits sont sur GitHub » | `git status` | Sur une branche suivie, Git indique si des commits sont en avance sur le distant. |
-| « J'ai committé sur la mauvaise branche » | Arrêter les nouvelles commandes et consulter `git log -5 --oneline` | Ne pas faire de `reset --hard` : récupérer les commits proprement selon la situation. |
+| « Git refuse `switch` à cause de modifications locales » | `git status` | Faire un commit sur la bonne branche ou utiliser `stash` (étape 5), puis `switch`. |
+| « `develop` a changé et ma PR a des conflits » | `git fetch origin` | Fusionner `origin/develop` dans la branche de travail et résoudre les conflits (étape 3). |
+| « J'ai corrigé du code après avoir ouvert la PR » | Rester sur la branche de la PR | Faire un commit puis `git push` : inutile de créer une nouvelle PR. |
+| « J'ai oublié si mes commits sont sur GitHub » | `git status` | Sur une branche suivie, vérifier si Git indique des commits en avance sur le distant. |
+| « J'ai commité sur la mauvaise branche » | Arrêter les nouvelles commandes et consulter `git log -5 --oneline` | Éviter `reset --hard` : récupérer les commits proprement selon la situation. |
 
-**En cas de doute : ne lancez pas de commande destructrice pour « tout remettre à zéro ».** Montrez le résultat de `git status`, la commande qui a échoué et son message d'erreur.
+**En cas de doute :** ne lancer aucune commande destructrice pour « tout remettre à zéro ». Relever le résultat de `git status`, la commande qui a échoué et son message d'erreur pour pouvoir analyser le problème.
 
 ---
 
@@ -214,7 +212,7 @@ Ces commandes ne sont **pas** nécessaires à chaque étape du workflow.
 
 | Commande | À quoi elle sert |
 | --- | --- |
-| `git switch develop` | Passer sur une branche existante. Commande préférée à `git checkout develop`. |
+| `git switch develop` | Passer sur une branche existante. Commande à préférer à `git checkout develop`. |
 | `git switch -c feat/nom` | Créer une branche à partir de la branche actuelle et s'y placer. |
 | `git checkout` | Ancienne commande polyvalente (branches et fichiers). Préférer `switch` pour les branches et `restore` pour les fichiers. |
 | `git restore fichier.php` | **Annuler les modifications non indexées** de ce fichier ; attention, elles sont perdues. |
@@ -230,12 +228,12 @@ Ces commandes ne sont **pas** nécessaires à chaque étape du workflow.
 | `git stash apply` | Réappliquer le dernier stash sans le supprimer. |
 | `git stash pop` | Réappliquer le dernier stash et le supprimer si cela réussit. |
 | `git stash drop` | Supprimer un stash **sans le réappliquer** : à utiliser avec précaution. |
-| `git stash push -u -m "message"` | Sauvegarder les modifications suivies et nouveaux fichiers non suivis, avec un libellé ; n'inclut pas les fichiers ignorés. |
+| `git stash push -u -m "message"` | Sauvegarder les modifications suivies et les nouveaux fichiers non suivis, avec un libellé ; n'inclut pas les fichiers ignorés. |
 
 ### Pour plus tard : `rebase`
 
-`git rebase origin/develop` permet de rejouer les commits de votre branche sur une version plus récente de `develop`. Cela peut rendre l'historique plus linéaire, **mais réécrit les commits** et demande davantage de précautions si la branche a déjà été publiée. **Notre workflow standard utilise `merge`, pas `rebase`.**
+`git rebase origin/develop` permet de rejouer les commits de la branche de travail sur une version plus récente de `develop`. Cela peut rendre l'historique plus linéaire, **mais réécrit les commits** et demande davantage de précautions si la branche a déjà été publiée. **Notre workflow standard utilise `merge`, pas `rebase`.**
 
 ---
 
-**Rappel final :** toutes les fonctionnalités, corrections et modifications documentaires partent de `develop` ; toute PR vers `develop` est relue par l'autre membre ; seule `develop` peut proposer une PR vers `main`.
+**Rappel final :** toutes les fonctionnalités, corrections et modifications documentaires partent de `develop` ; toute PR vers `develop` est relue par l'autre membre du binôme ; seule `develop` peut proposer une PR vers `main`.
