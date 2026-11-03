@@ -52,9 +52,16 @@ class Employe implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Indisponibilite::class, mappedBy: 'employe')]
     private Collection $indisponibilites;
 
+    /**
+     * @var Collection<int, CreneauTravail>
+     */
+    #[ORM\OneToMany(targetEntity: CreneauTravail::class, mappedBy: 'employe')]
+    private Collection $creneauxTravail;
+
     public function __construct()
     {
         $this->indisponibilites = new ArrayCollection();
+        $this->creneauxTravail = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -204,6 +211,36 @@ class Employe implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($indisponibilite->getEmploye() === $this) {
                 $indisponibilite->setEmploye(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CreneauTravail>
+     */
+    public function getcreneauxTravail(): Collection
+    {
+        return $this->creneauxTravail;
+    }
+
+    public function addCreneauTravail(CreneauTravail $creneauTravail): static
+    {
+        if (!$this->creneauxTravail->contains($creneauTravail)) {
+            $this->creneauxTravail->add($creneauTravail);
+            $creneauTravail->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCreneauTravail(CreneauTravail $creneauTravail): static
+    {
+        if ($this->creneauxTravail->removeElement($creneauTravail)) {
+            // set the owning side to null (unless already changed)
+            if ($creneauTravail->getEmploye() === $this) {
+                $creneauTravail->setEmploye(null);
             }
         }
 
