@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Enum\Poste;
 use App\Repository\EmployeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -43,6 +45,17 @@ class Employe implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(enumType: Poste::class)]
     private ?Poste $poste = null;
+
+    /**
+     * @var Collection<int, Indisponibilite>
+     */
+    #[ORM\OneToMany(targetEntity: Indisponibilite::class, mappedBy: 'employe')]
+    private Collection $indisponibilites;
+
+    public function __construct()
+    {
+        $this->indisponibilites = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -163,6 +176,36 @@ class Employe implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPoste(Poste $poste): static
     {
         $this->poste = $poste;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Indisponibilite>
+     */
+    public function getIndisponibilites(): Collection
+    {
+        return $this->indisponibilites;
+    }
+
+    public function addIndisponibilite(Indisponibilite $indisponibilite): static
+    {
+        if (!$this->indisponibilites->contains($indisponibilite)) {
+            $this->indisponibilites->add($indisponibilite);
+            $indisponibilite->setEmploye($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIndisponibilite(Indisponibilite $indisponibilite): static
+    {
+        if ($this->indisponibilites->removeElement($indisponibilite)) {
+            // set the owning side to null (unless already changed)
+            if ($indisponibilite->getEmploye() === $this) {
+                $indisponibilite->setEmploye(null);
+            }
+        }
 
         return $this;
     }
