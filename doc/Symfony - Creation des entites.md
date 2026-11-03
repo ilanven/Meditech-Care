@@ -118,6 +118,44 @@ Répéter pour les autres entités. **Créer d'abord les propriétés simples ; 
 
 Pour `debut`, `fin`, `dateDiagnostic` ou `dateIntervention`, choisir `date_immutable` ou `datetime_immutable` selon le besoin d'enregistrer **une heure**. Pour les durées, fixer une unité commune (par exemple, la minute).
 
+### Cas particulier : créer une entité utilisateur (`Employe`)
+
+Pour une entité qui doit se connecter avec l’authentification Symfony, **utiliser `make:user` à la place de `make:entity` pour sa création** :
+
+```bash
+php bin/console make:user
+```
+
+Choisir `Employe` comme nom de classe, **yes** pour le stockage Doctrine, `email` comme identifiant et **yes** pour le hashage des mots de passe. Symfony crée l'entité compatible avec son système de sécurité. **Ne pas ajouter de propriété `mdp`** : utiliser le champ `password` généré (mot de passe hashé).
+
+Ajouter ensuite les autres attributs du MCD comme pour une entité classique :
+
+```bash
+php bin/console make:entity Employe
+```
+
+### Cas particulier : utiliser un enum (`poste`, `type`…)
+
+Un **enum** limite une propriété à une liste de valeurs définies, par exemple les postes possibles d'un employé.
+
+**Créer d'abord l'enum** dans `src/Enum/Poste.php` :
+
+```php
+<?php
+
+namespace App\Enum;
+
+enum Poste: string
+{
+    case Technicien = 'technicien';
+    case Responsable = 'responsable';
+}
+```
+
+**Ajouter ensuite la propriété** avec `make:entity Employe` : nom `poste` → type `enum` → classe `App\Enum\Poste` → une seule valeur → choisir `nullable` selon le besoin. Doctrine stocke la valeur sous forme de chaîne en BDD, mais PHP manipule un `Poste`.
+
+Pour éviter les confusions de noms, préférer `TypeIndisponibilite` pour l'enum de l'entité `Indisponibilite`. Les valeurs ci-dessus sont des exemples à adapter au MCD et aux règles métier.
+
 ## 4. Comprendre les relations et les cardinalités
 
 **La question à se poser :** « Pour **un objet A**, combien d'objets B peuvent être liés ? » Lire les cardinalités **de chaque côté** du MCD.
@@ -148,7 +186,7 @@ Répondre aux questions :
 | Entité liée | `Client` |
 | Type de relation | `ManyToOne` |
 | Relation nullable ? | `no` (`1,1` côté appareil) |
-| Ajouter la propriété inverse dans `Client` ? | `yes` **si utile** pour retrouver les appareils d'un client |
+| Ajouter la propriété inverse dans `Client` ? | `yes` (ce sera utile pour retrouver les appareils d'un client) |
 | Nom de la propriété inverse (si demandé) | `appareils` |
 | Suppression automatique des objets orphelins (`orphanRemoval`) ? | `no` par défaut, tant que la règle métier n'est pas définie |
 
