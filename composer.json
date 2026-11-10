@@ -86,6 +86,16 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "lint": "find src tests -name '*.php' -print0 | xargs -0 -n1 php -l",
+        "cs": "php-cs-fixer fix",
+        "phpstan": "phpstan analyse --no-progress",
+        "test": "phpunit",
+        "qa": [
+            "@lint",
+            "@cs",
+            "@phpstan",
+            "@test"
         ]
     },
     "conflict": {
