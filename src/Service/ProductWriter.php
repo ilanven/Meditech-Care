@@ -10,7 +10,7 @@ use App\Dto\Product\ReplaceProductInput;
 use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
 
-/** Ecriture des produits : le contrôleur final orchestre HTTP, ce service modifie l'entité. */
+/** Ecrit en BDD sans connaître Request, JsonResponse, statuts HTTP ou OpenAPI. */
 final class ProductWriter
 {
     public function __construct(private readonly EntityManagerInterface $em)
@@ -19,6 +19,10 @@ final class ProductWriter
 
     public function create(CreateProductInput $input): Product
     {
+        if ($input->price === null || $input->stock === null) {
+            throw new \LogicException('CreateProductInput doit être validé avant écriture.');
+        }
+
         $product = (new Product())
             ->setName($input->name)
             ->setDescription($input->description)
@@ -34,6 +38,10 @@ final class ProductWriter
 
     public function replace(Product $product, ReplaceProductInput $input): Product
     {
+        if ($input->price === null || $input->stock === null || $input->isActive === null) {
+            throw new \LogicException('ReplaceProductInput doit être validé avant écriture.');
+        }
+
         $product
             ->setName($input->name)
             ->setDescription($input->description)
@@ -41,27 +49,40 @@ final class ProductWriter
             ->setStock($input->stock)
             ->setIsActive($input->isActive);
 
+        // L'entité a été obtenue par Doctrine ; elle est déjà suivie.
         $this->em->flush();
 
         return $product;
     }
 
-    /** @param list<string> $presentFields Champs réellement envoyés dans le JSON. */
+    /** @param list<string> $presentFields Les clés réellement envoyées dans le JSON. */
     public function patch(Product $product, PatchProductInput $input, array $presentFields): Product
     {
         if (in_array('name', $presentFields, true)) {
+            if ($input->name === null) {
+                throw new \LogicException('PATCH : name validé ne peut pas être null.');
+            }
             $product->setName($input->name);
         }
         if (in_array('description', $presentFields, true)) {
             $product->setDescription($input->description);
         }
         if (in_array('price', $presentFields, true)) {
+            if ($input->price === null) {
+                throw new \LogicException('PATCH : price validé ne peut pas être null.');
+            }
             $product->setPrice($input->price);
         }
         if (in_array('stock', $presentFields, true)) {
+            if ($input->stock === null) {
+                throw new \LogicException('PATCH : stock validé ne peut pas être null.');
+            }
             $product->setStock($input->stock);
         }
         if (in_array('isActive', $presentFields, true)) {
+            if ($input->isActive === null) {
+                throw new \LogicException('PATCH : isActive validé ne peut pas être null.');
+            }
             $product->setIsActive($input->isActive);
         }
 
