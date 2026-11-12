@@ -58,6 +58,9 @@ class Employe implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: CreneauTravail::class, mappedBy: 'employe')]
     private Collection $creneauxTravail;
 
+    #[ORM\Column]
+    private ?bool $actif = null;
+
     public function __construct()
     {
         $this->indisponibilites = new ArrayCollection();
@@ -243,6 +246,18 @@ class Employe implements UserInterface, PasswordAuthenticatedUserInterface
                 $creneauTravail->setEmploye(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isActif(): ?bool
+    {
+        return $this->actif;
+    }
+
+    public function setActif(bool $actif): static
+    {
+        $this->actif = $actif;
 
         return $this;
     }
