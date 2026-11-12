@@ -13,7 +13,9 @@ use Doctrine\ORM\EntityManagerInterface;
 /** Ecriture des produits : le contrôleur final orchestre HTTP, ce service modifie l'entité. */
 final class ProductWriter
 {
-    public function __construct(private readonly EntityManagerInterface $em) {}
+    public function __construct(private readonly EntityManagerInterface $em)
+    {
+    }
 
     public function create(CreateProductInput $input): Product
     {

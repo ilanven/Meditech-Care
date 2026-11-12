@@ -14,5 +14,6 @@ final readonly class ApiErrorOutput
         #[OA\Property(example: 'PRODUCT_NOT_FOUND')] public string $code,
         #[OA\Property(example: 'Produit introuvable.')] public string $message,
         #[OA\Property(type: 'array', items: new OA\Items(type: 'object'))] public array $details = [],
-    ) {}
+    ) {
+    }
 }

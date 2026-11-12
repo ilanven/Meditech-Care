@@ -105,7 +105,7 @@ Vérifier et relire la migration avant son exécution si le projet contient déj
 Pour ajouter uniquement les produits de démonstration **sans purger les autres tables** :
 
 ```bash
-php bin/console doctrine:fixtures:load --group=ProductFixtures --append
+php bin/console doctrine:fixtures:load --group=ProductFixtures
 ```
 
 Cette commande insère 10 produits. **Attention : la relancer avec `--append` ajoute à nouveau 10 produits** ; elle ne nettoie pas les précédents. Idéalement, utiliser une base de développement dédiée ou une base de test jetable. Vérifier avec `php bin/console doctrine:fixtures:load --group=ProductFixtures --append --dry-run` si cette option existe dans la version installée.

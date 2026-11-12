@@ -229,8 +229,12 @@ final class ProductFinalController extends AbstractController
         $allowed = ['name', 'description', 'price', 'stock', 'isActive'];
         $unknown = array_diff(array_keys($data), $allowed);
         if ($unknown !== []) {
-            return $this->error('UNKNOWN_FIELDS', 'Le payload contient des champs non autorisés.', Response::HTTP_UNPROCESSABLE_ENTITY,
-                array_map(static fn (string $field): array => ['field' => $field, 'message' => 'Champ non autorisé.'], array_values($unknown)));
+            return $this->error(
+                'UNKNOWN_FIELDS',
+                'Le payload contient des champs non autorisés.',
+                Response::HTTP_UNPROCESSABLE_ENTITY,
+                array_map(static fn (string $field): array => ['field' => $field, 'message' => 'Champ non autorisé.'], array_values($unknown))
+            );
         }
         // PUT exige tous les champs non-nullables. POST laisse isActive à true par défaut.
         $required = $type === ReplaceProductInput::class
@@ -238,8 +242,12 @@ final class ProductFinalController extends AbstractController
             : ($type === CreateProductInput::class ? ['name', 'price', 'stock'] : []);
         $missing = array_values(array_diff($required, array_keys($data)));
         if ($missing !== []) {
-            return $this->error('MISSING_FIELDS', 'Des champs obligatoires sont absents.', Response::HTTP_UNPROCESSABLE_ENTITY,
-                array_map(static fn (string $field): array => ['field' => $field, 'message' => 'Champ obligatoire.'], $missing));
+            return $this->error(
+                'MISSING_FIELDS',
+                'Des champs obligatoires sont absents.',
+                Response::HTTP_UNPROCESSABLE_ENTITY,
+                array_map(static fn (string $field): array => ['field' => $field, 'message' => 'Champ obligatoire.'], $missing)
+            );
         }
 
         try {

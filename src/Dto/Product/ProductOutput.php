@@ -18,7 +18,8 @@ final readonly class ProductOutput
         #[OA\Property(type: 'string', example: '49.90')] public string $price,
         #[OA\Property(type: 'integer', minimum: 0, example: 12)] public int $stock,
         #[OA\Property(type: 'boolean', example: true)] public bool $isActive,
-    ) {}
+    ) {
+    }
 
     public static function fromEntity(Product $product): self
     {
