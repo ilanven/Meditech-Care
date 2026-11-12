@@ -1,0 +1,10 @@
+# config/packages/nelmio_api_doc.yaml
+nelmio_api_doc:
+    documentation:
+        info:
+            title: Meditech Care — atelier Products
+            description: Exercices de création d'API Symfony
+            version: 1.0.0
+    areas:
+        path_patterns:
+            - ^/api(?!/doc$)
