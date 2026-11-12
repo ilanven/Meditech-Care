@@ -1,20 +1,23 @@
-<mxfile host="app.diagrams.net" pages="5">
-  <diagram name="MCD" id="kWFpoFasCZAT1iVSt7Xm">
-    <mxGraphModel dx="1378" dy="631" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+<mxfile host="app.diagrams.net" pages="4">
+  <diagram name="MCD" id="3ZVAuN-DAaxb4on7VYKp">
+    <mxGraphModel dx="1884" dy="791" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="X-FGs0UT_WYxGdYHn5O_-1" parent="1" style="whiteSpace=wrap;html=1;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" value="" vertex="1">
-          <mxGeometry height="870" width="710" x="60" y="60" as="geometry" />
+          <mxGeometry height="870" width="1150" x="60" y="60" as="geometry" />
         </mxCell>
         <mxCell id="jICa8P5774ait_iin2nh-5" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;text-decoration:underline;&quot;&gt;&lt;b&gt;Appareil&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;u&gt;idAppareil&lt;/u&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;marque&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;modele&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;annee&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;numeroSerie&lt;/p&gt;" vertex="1">
           <mxGeometry height="110" width="160" x="560" y="124" as="geometry" />
         </mxCell>
-        <mxCell id="jICa8P5774ait_iin2nh-15" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;text-decoration:underline;&quot;&gt;&lt;b&gt;Employe&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;u&gt;idEmploye&lt;/u&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;nom&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;prenom&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;telephone&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;email&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(#000000, var(--ge-light-color, #ffffff));&quot;&gt;poste&lt;/span&gt;&lt;/p&gt;" vertex="1">
-          <mxGeometry height="127" width="160" x="190" y="432" as="geometry" />
+        <mxCell id="jICa8P5774ait_iin2nh-15" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;text-decoration:underline;&quot;&gt;&lt;b&gt;Employe&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;u&gt;idEmploye&lt;/u&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;nom&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;prenom&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;telephone&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;email&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(#000000, var(--ge-light-color, #ffffff));&quot;&gt;poste&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(#000000, var(--ge-light-color, #ffffff));&quot;&gt;actif&lt;/span&gt;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="138" width="160" x="190" y="426" as="geometry" />
         </mxCell>
-        <mxCell id="jICa8P5774ait_iin2nh-22" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;text-decoration:underline;&quot;&gt;&lt;b&gt;Intervention&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;u&gt;idIntervention&lt;/u&gt;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;dateDiagnostic&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;dureeDiagnostic&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;dateIntervention&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;dureeIntervention&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;description&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;diagnostic&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;statut&lt;/p&gt;" vertex="1">
-          <mxGeometry height="150" width="160" x="560" y="420" as="geometry" />
+        <mxCell id="m-klHHXhdkIgurvrb8qz-16" edge="1" parent="1" source="jICa8P5774ait_iin2nh-22" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;defaultLabelBackgroundColor=page;" target="m-klHHXhdkIgurvrb8qz-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="jICa8P5774ait_iin2nh-22" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;text-decoration:underline;&quot;&gt;&lt;b&gt;Intervention&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;u&gt;idIntervention&lt;/u&gt;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;probleme&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;statut&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(#000000, var(--ge-light-color, #ffffff));&quot;&gt;description&lt;/span&gt;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="95" width="160" x="560" y="448" as="geometry" />
         </mxCell>
         <mxCell id="jICa8P5774ait_iin2nh-23" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Concerne" vertex="1">
           <mxGeometry height="45" width="100" x="590" y="315" as="geometry" />
@@ -55,7 +58,7 @@
         <mxCell id="jICa8P5774ait_iin2nh-32" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="0,N" vertex="1">
           <mxGeometry height="30" width="60" x="343" y="457.5" as="geometry" />
         </mxCell>
-        <mxCell id="jICa8P5774ait_iin2nh-33" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="0,1&amp;nbsp;&lt;div&gt;? simplicité&lt;/div&gt;" vertex="1">
+        <mxCell id="jICa8P5774ait_iin2nh-33" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="0,1" vertex="1">
           <mxGeometry height="30" width="60" x="500" y="457.5" as="geometry" />
         </mxCell>
         <mxCell id="jICa8P5774ait_iin2nh-34" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;text-decoration:underline;&quot;&gt;&lt;b&gt;MaterielIntervention&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;u&gt;idMaterielIntervention&lt;/u&gt;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;quantite&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;nom&lt;/p&gt;" vertex="1">
@@ -82,8 +85,8 @@
         <mxCell id="jICa8P5774ait_iin2nh-39" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="1,1" vertex="1">
           <mxGeometry height="30" width="60" x="640" y="680" as="geometry" />
         </mxCell>
-        <mxCell id="jICa8P5774ait_iin2nh-40" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;text-decoration:underline;&quot;&gt;&lt;b&gt;Client&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;u&gt;idClient&lt;/u&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;nomEtablissement&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;service&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;adresse&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;SIREN&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;contactNom&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;contactPrenom&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;contactEmail&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;contactTelephone&lt;/p&gt;" vertex="1">
-          <mxGeometry height="165.5" width="160" x="170" y="90" as="geometry" />
+        <mxCell id="jICa8P5774ait_iin2nh-40" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;text-decoration:underline;&quot;&gt;&lt;b&gt;Client&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;u&gt;idClient&lt;/u&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;nomEtablissement&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;service&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;adresse&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;SIREN&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;contactNom&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;contactPrenom&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;contactEmail&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;contactTelephone&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;actif&lt;/p&gt;" vertex="1">
+          <mxGeometry height="175" width="160" x="170" y="86" as="geometry" />
         </mxCell>
         <mxCell id="jICa8P5774ait_iin2nh-47" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Possède" vertex="1">
           <mxGeometry height="40" width="91" x="400" y="153.25" as="geometry" />
@@ -109,7 +112,7 @@
         <mxCell id="7VASm7S9oQ2_Vph2wI9U-1" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;text-decoration:underline;&quot;&gt;&lt;b&gt;MaterielStock&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;u&gt;idMaterielStock&lt;/u&gt;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;nom&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;quantite&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;seuilMinimal&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;br&gt;&lt;/p&gt;" vertex="1">
           <mxGeometry height="90" width="160" x="560" y="830" as="geometry" />
         </mxCell>
-        <mxCell id="zqd0QUmGbFcjL_SWDXsI-1" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;text-decoration:underline;&quot;&gt;&lt;b&gt;Indisponibilite&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;u&gt;idIndisponibilite&lt;/u&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;debut&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;fin&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;type ? (pour ajout de congés)&lt;/p&gt;" vertex="1">
+        <mxCell id="zqd0QUmGbFcjL_SWDXsI-1" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;text-decoration:underline;&quot;&gt;&lt;b&gt;Indisponibilite&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;u&gt;idIndisponibilite&lt;/u&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;debut&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;fin&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;type&lt;/p&gt;" vertex="1">
           <mxGeometry height="110" width="160" x="277" y="722" as="geometry" />
         </mxCell>
         <mxCell id="zqd0QUmGbFcjL_SWDXsI-2" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;text-decoration:underline;&quot;&gt;&lt;b&gt;CreneauTravail&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;u&gt;idCreneauTravail&lt;/u&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;debut&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;fin&lt;/p&gt;" vertex="1">
@@ -160,11 +163,48 @@
         <mxCell id="29XCDaHYvA6bDQU8HeCi-1" parent="1" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(#000000, var(--ge-light-color, #ffffff));&quot;&gt;MCD&lt;/span&gt;&lt;/h1&gt;&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;span style=&quot;font-size: 12px; font-weight: 400;&quot;&gt;à jour - 03/11/266&lt;/span&gt;&lt;/h1&gt;" vertex="1">
           <mxGeometry height="175" width="180" x="110" y="300" as="geometry" />
         </mxCell>
+        <mxCell id="m-klHHXhdkIgurvrb8qz-1" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;text-decoration:underline;&quot;&gt;&lt;b&gt;Diagnostic&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;u&gt;idDiagnostic&lt;/u&gt;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;date&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;duree&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;diagnostic&lt;/p&gt;" vertex="1">
+          <mxGeometry height="110" width="160" x="939" y="393" as="geometry" />
+        </mxCell>
+        <mxCell id="m-klHHXhdkIgurvrb8qz-2" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;text-decoration:underline;&quot;&gt;&lt;b&gt;Operation&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;u&gt;idOperation&lt;/u&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;dateOperation&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;dureeOperation&lt;/p&gt;" vertex="1">
+          <mxGeometry height="106.5" width="160" x="939" y="534.25" as="geometry" />
+        </mxCell>
+        <mxCell id="m-klHHXhdkIgurvrb8qz-17" edge="1" parent="1" source="m-klHHXhdkIgurvrb8qz-15" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;defaultLabelBackgroundColor=page;" target="m-klHHXhdkIgurvrb8qz-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="m-klHHXhdkIgurvrb8qz-15" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Possède" vertex="1">
+          <mxGeometry height="45" width="100" x="782" y="426" as="geometry" />
+        </mxCell>
+        <mxCell id="m-klHHXhdkIgurvrb8qz-21" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="1,1" vertex="1">
+          <mxGeometry height="30" width="60" x="882" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="m-klHHXhdkIgurvrb8qz-22" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="0,1" vertex="1">
+          <mxGeometry height="30" width="60" x="720" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="m-klHHXhdkIgurvrb8qz-23" edge="1" parent="1" source="jICa8P5774ait_iin2nh-22" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;defaultLabelBackgroundColor=page;" target="m-klHHXhdkIgurvrb8qz-25">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="721" y="640.75" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m-klHHXhdkIgurvrb8qz-24" edge="1" parent="1" source="m-klHHXhdkIgurvrb8qz-25" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;defaultLabelBackgroundColor=page;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="940" y="593.75" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m-klHHXhdkIgurvrb8qz-25" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Possède" vertex="1">
+          <mxGeometry height="45" width="100" x="783" y="571.75" as="geometry" />
+        </mxCell>
+        <mxCell id="m-klHHXhdkIgurvrb8qz-26" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="1,1" vertex="1">
+          <mxGeometry height="30" width="60" x="881" y="560.75" as="geometry" />
+        </mxCell>
+        <mxCell id="m-klHHXhdkIgurvrb8qz-27" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="0,1" vertex="1">
+          <mxGeometry height="30" width="60" x="736" y="536.75" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
-  <diagram name="Diagramme de classes" id="6NYZ51qhDRsYI3SEIDXU">
-    <mxGraphModel dx="2997" dy="2083" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+  <diagram name="Diagramme de classes" id="GJNRbxkTWsPA5DB9x6xH">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -399,7 +439,7 @@
       </root>
     </mxGraphModel>
   </diagram>
-  <diagram name="Cas d&#39;utilisations" id="Dj__iAvHpuS7JYhgF4jx">
+  <diagram name="Cas d&#39;utilisations" id="qc659CfVC9RTSuBhcysj">
     <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
@@ -584,16 +624,8 @@
       </root>
     </mxGraphModel>
   </diagram>
-  <diagram name="Page-4" id="jRyQCZV3tz3npqNySCTO">
-    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
-      <root>
-        <mxCell id="0" />
-        <mxCell id="1" parent="0" />
-      </root>
-    </mxGraphModel>
-  </diagram>
-  <diagram name="Architecture APP" id="KdnH36L8wrMGwYnmIZAh">
-    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+  <diagram name="Architecture APP" id="IqcDiavY8H6a4WAUfQE1">
+    <mxGraphModel dx="1443" dy="772" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
