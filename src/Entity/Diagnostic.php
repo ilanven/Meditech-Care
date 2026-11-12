@@ -22,6 +22,10 @@ class Diagnostic
     #[ORM\Column(length: 10000)]
     private ?string $diagnostic = null;
 
+    #[ORM\OneToOne(inversedBy: 'diagnostic', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Intervention $intervention = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +63,18 @@ class Diagnostic
     public function setDiagnostic(string $diagnostic): static
     {
         $this->diagnostic = $diagnostic;
+
+        return $this;
+    }
+
+    public function getIntervention(): ?Intervention
+    {
+        return $this->intervention;
+    }
+
+    public function setIntervention(Intervention $intervention): static
+    {
+        $this->intervention = $intervention;
 
         return $this;
     }

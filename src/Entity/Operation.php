@@ -19,6 +19,10 @@ class Operation
     #[ORM\Column]
     private ?int $dureeOperation = null;
 
+    #[ORM\OneToOne(inversedBy: 'operation', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Intervention $Intervention = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +48,18 @@ class Operation
     public function setDureeOperation(int $dureeOperation): static
     {
         $this->dureeOperation = $dureeOperation;
+
+        return $this;
+    }
+
+    public function getIntervention(): ?Intervention
+    {
+        return $this->Intervention;
+    }
+
+    public function setIntervention(Intervention $Intervention): static
+    {
+        $this->Intervention = $Intervention;
 
         return $this;
     }

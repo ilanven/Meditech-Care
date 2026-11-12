@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ClientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -40,6 +42,17 @@ class Client
 
     #[ORM\Column]
     private ?bool $actif = null;
+
+    /**
+     * @var Collection<int, Appareil>
+     */
+    #[ORM\OneToMany(targetEntity: Appareil::class, mappedBy: 'client')]
+    private Collection $appareils;
+
+    public function __construct()
+    {
+        $this->appareils = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -150,6 +163,36 @@ class Client
     public function setActif(bool $actif): static
     {
         $this->actif = $actif;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Appareil>
+     */
+    public function getAppareils(): Collection
+    {
+        return $this->appareils;
+    }
+
+    public function addAppareil(Appareil $appareil): static
+    {
+        if (!$this->appareils->contains($appareil)) {
+            $this->appareils->add($appareil);
+            $appareil->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAppareil(Appareil $appareil): static
+    {
+        if ($this->appareils->removeElement($appareil)) {
+            // set the owning side to null (unless already changed)
+            if ($appareil->getClient() === $this) {
+                $appareil->setClient(null);
+            }
+        }
 
         return $this;
     }

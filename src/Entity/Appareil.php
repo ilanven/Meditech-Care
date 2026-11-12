@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AppareilRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AppareilRepository::class)]
@@ -24,6 +26,21 @@ class Appareil
 
     #[ORM\Column(length: 255)]
     private ?string $numeroSerie = null;
+
+    #[ORM\ManyToOne(inversedBy: 'appareils')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Client $client = null;
+
+    /**
+     * @var Collection<int, Intervention>
+     */
+    #[ORM\OneToMany(targetEntity: Intervention::class, mappedBy: 'appareil')]
+    private Collection $interventions;
+
+    public function __construct()
+    {
+        $this->interventions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -74,6 +91,48 @@ class Appareil
     public function setNumeroSerie(string $numeroSerie): static
     {
         $this->numeroSerie = $numeroSerie;
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): static
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Intervention>
+     */
+    public function getInterventions(): Collection
+    {
+        return $this->interventions;
+    }
+
+    public function addIntervention(Intervention $intervention): static
+    {
+        if (!$this->interventions->contains($intervention)) {
+            $this->interventions->add($intervention);
+            $intervention->setAppareil($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIntervention(Intervention $intervention): static
+    {
+        if ($this->interventions->removeElement($intervention)) {
+            // set the owning side to null (unless already changed)
+            if ($intervention->getAppareil() === $this) {
+                $intervention->setAppareil(null);
+            }
+        }
 
         return $this;
     }
