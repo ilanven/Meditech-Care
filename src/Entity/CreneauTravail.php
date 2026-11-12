@@ -19,7 +19,7 @@ class CreneauTravail
     #[ORM\Column]
     private ?\DateTimeImmutable $fin = null;
 
-    #[ORM\ManyToOne(inversedBy: 'creneauTravails')]
+    #[ORM\ManyToOne(inversedBy: 'creneauxTravail')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Employe $employe = null;
 
