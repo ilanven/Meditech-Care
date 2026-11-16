@@ -177,6 +177,8 @@ Ces zones ne répondent pas toutes à la même question :
 
 **Ne pas confondre une réponse documentée `201` avec une réponse effectivement reçue `201`.** Si une exécution renvoie `500`, la documentation affichée ne fait pas disparaître cette erreur : elle indique simplement ce que le contrat prévoyait.
 
+La section globale **Schemas** en bas de Swagger UI est masquée par `defaultModelsExpandDepth: -1` dans `config/packages/nelmio_api_doc.yaml`. Cela ne supprime pas les schémas des DTO : Nelmio continue à les générer et à les utiliser dans les opérations Verified et Final.
+
 ## 2.5 Garder une trace des tests
 
 Noter, pour le produit créé en Basic :
@@ -609,7 +611,7 @@ La suite ne change pas le besoin métier. Elle s'intéresse à la **description 
 
 # 6. Niveau 2 — TAGOA : construire la documentation OpenAPI
 
-**Code à ouvrir :** `ProductController.php`, bloc `NIVEAU 2 — TAG OA`, ainsi que les cinq `#[OA\Schema(...)]` placés au-dessus de la classe.  
+**Code à ouvrir :** `ProductController.php`, bloc `NIVEAU 2 — TAG OA`.
 **Groupe Swagger :** `Products / 2 — TagOA`.  
 **Base des URL :** `/api/learning/products/tagOA`.
 
@@ -719,7 +721,7 @@ requestBody: new OA\RequestBody(
     required: true,
     description: 'Objet JSON à insérer.',
     content: new OA\JsonContent(
-        ref: '#/components/schemas/LearningProductCreate',
+        type: 'object',
         example: ['name' => 'Lampe USB', 'price' => '18.90', 'stock' => 5],
     ),
 ),
@@ -731,10 +733,10 @@ requestBody: new OA\RequestBody(
 - `required: true` **sur RequestBody** signifie que la requête doit contenir un body. Cela ne déclare pas que toutes les propriétés JSON sont obligatoires.
 - `content` décrit le ou les formats acceptés.
 - `OA\JsonContent` est une écriture abrégée du contenu au format **`application/json`**.
-- `ref` renvoie vers un schéma réutilisable déjà défini dans `components/schemas`.
+- `type: 'object'` indique que le body JSON attendu est un objet.
 - `example` donne à Swagger un exemple de **body complet**.
 
-La question des propriétés requises est traitée **à l'intérieur du schéma**, avec `required: ['name','price','stock']`. Il faut donc distinguer le body obligatoire de ses champs obligatoires.
+À ce niveau, les propriétés obligatoires ne sont **pas déclarées par une liste `required` dans `OA\JsonContent`**. La description de l'opération indique les champs attendus, mais ce bloc OpenAPI ne valide pas le JSON côté serveur.
 
 ### `responses` — ce que le serveur est censé renvoyer
 
@@ -754,43 +756,43 @@ Une opération peut documenter plusieurs réponses : par exemple, `GET /{id}` pr
 
 ## 6.4 Les schémas : décrire la structure des objets
 
-En haut de `ProductController.php`, lire :
+Dans la version actuelle du niveau TagOA, les descriptions JSON sont écrites **directement dans les opérations** avec `OA\JsonContent` : il n'y a plus de schémas nommés `LearningProduct...` ni de références `#/components/schemas/LearningProduct...`.
+
+Par exemple, le POST décrit son entrée avec un objet JSON et un exemple :
 
 ```php
-#[OA\Schema(
-    schema: 'LearningProductCreate',
+content: new OA\JsonContent(
     type: 'object',
-    required: ['name', 'price', 'stock'],
-    properties: [
-        new OA\Property(property: 'name', type: 'string', example: 'Clavier mécanique'),
-        // ...
+    example: [
+        'name' => 'Lampe de bureau',
+        'description' => 'Recharge USB-C',
+        'price' => '18.90',
+        'stock' => 5,
+        'isActive' => true,
     ],
-)]
+),
 ```
 
-Ce bloc déclare une **composante réutilisable** du contrat. Dans le document généré, elle appartient à `components.schemas.LearningProductCreate`. Elle peut ensuite être citée par plusieurs opérations grâce à :
+Sa réponse `201` décrit directement les deux propriétés renvoyées :
 
 ```php
-ref: '#/components/schemas/LearningProductCreate'
+content: new OA\JsonContent(
+    type: 'object',
+    required: ['id', 'message'],
+    properties: [
+        new OA\Property(property: 'id', type: 'integer', example: 42),
+        new OA\Property(property: 'message', type: 'string', example: 'Créé'),
+    ],
+),
 ```
 
-L'intérêt du `$ref` est d'éviter de recopier partout les mêmes descriptions. Cela n'introduit pas un DTO PHP : `LearningProductCreate` est ici **un nom de schéma OpenAPI** défini dans les attributs, pas une classe instanciée pour valider une requête.
+Dans le premier cas, l'exemple montre la forme attendue, **sans déclarer formellement chaque propriété**. Dans le second, `properties` décrit les champs de la réponse, et `required` indique ceux qui doivent y figurer. Ce sont toujours des informations de documentation, pas des contrôles exécutés par Symfony.
 
-Le contrôleur définit cinq schémas pour l'apprentissage :
-
-| Schéma | Rôle |
-|---|---|
-| `LearningProduct` | Objet complet renvoyé à la lecture |
-| `LearningProductCreate` | JSON attendu en POST |
-| `LearningProductReplace` | JSON attendu en PUT |
-| `LearningProductPatch` | Champs facultatifs du PATCH |
-| `LearningProductNotFound` | Réponse d'erreur 404 des méthodes simples |
-
-**Différence déterminante :** les schémas et les exemples sont des **objets de documentation**. Dans Verified et Final, des **DTO PHP** distincts serviront également à traiter et valider réellement les entrées.
+Au niveau Verified et dans le contrôleur Final, les DTO PHP disposent de leurs propres attributs OA. Nelmio peut en générer des schémas réutilisables via `new Model(type: ...)`, sans les cinq anciens schémas manuels de TagOA.
 
 ### Décomposer `OA\Property`
 
-Pour un stock :
+Pour un stock, par exemple dans les descriptions du niveau Basic :
 
 ```php
 new OA\Property(property: 'stock', type: 'integer', minimum: 0, example: 12)
@@ -816,15 +818,21 @@ Pour un prix, `type: 'string'` documente le contrat JSON avec guillemets ; il ne
 ```php
 new OA\JsonContent(
     type: 'array',
-    items: new OA\Items(ref: '#/components/schemas/LearningProduct'),
+    items: new OA\Items(type: 'object'),
+    example: [[
+        'id' => 5,
+        'name' => 'Clavier mécanique',
+        // ... autres propriétés du produit
+    ]],
 )
 ```
 
 - `type: 'array'` : le JSON de sortie est une liste `[...]` ;
-- `items` : décrit la structure **d'un élément de cette liste** ;
-- `ref` : chaque élément correspond au schéma d'un produit.
+- `items` : décrit la nature **d'un élément de cette liste** ;
+- `type: 'object'` : chaque élément est un objet JSON, sans schéma de propriétés détaillé ;
+- `example` : montre une collection concrète que Swagger peut afficher.
 
-Ne pas confondre la collection `[{...},{...}]` et un objet `{...}` : c'est une distinction essentielle pour le frontend. Avec un mauvais schéma, Swagger pourrait afficher un seul objet alors que le serveur renvoie un tableau.
+Ne pas confondre la collection `[{...},{...}]` et un objet `{...}` : c'est une distinction essentielle pour le frontend. Ici, l'exemple montre les champs du produit, mais `OA\Items(type: 'object')` ne les impose pas.
 
 ### Exemple vs contrainte
 
@@ -837,7 +845,7 @@ Ne pas confondre la collection `[{...},{...}]` et un objet `{...}` : c'est une d
 1. Déplier GET `/api/learning/products/tagOA` dans Swagger.
 2. Lire le **summary** et la **description** de l'opération.
 3. Dans les **Responses**, ouvrir le modèle prévu pour `200`.
-4. Constater qu'il s'agit d'un `array` dont les éléments sont des `LearningProduct`.
+4. Constater qu'il s'agit d'un `array` d'objets JSON, accompagné d'un exemple de produit.
 5. Cliquer **Try it out** puis **Execute**.
 
 **Résultat attendu :** statut `200` et même type de données que le GET Basic. Le JSON est toujours construit manuellement par le contrôleur.
@@ -858,7 +866,7 @@ Ne pas confondre la collection `[{...},{...}]` et un objet `{...}` : c'est une d
 
 1. Déplier POST `/tagOA` ; lire `Request body`.
 2. Vérifier que Swagger propose le format `application/json`.
-3. Examiner le schéma `LearningProductCreate` : trois champs marqués comme obligatoires.
+3. Examiner l'exemple du body JSON. La description indique que `name`, `price` et `stock` sont attendus, sans que ces propriétés soient déclarées `required` dans `OA\JsonContent`.
 4. Cliquer **Try it out** et envoyer :
 
 ```json
@@ -872,7 +880,7 @@ Ne pas confondre la collection `[{...},{...}]` et un objet `{...}` : c'est une d
 ```
 
 5. Exécuter ; attendre `201`, `id` et `message`.
-6. Observer que la réponse **réelle** est un petit objet contenant l'ID, non un `LearningProduct` complet. C'est bien ce qu'annonce la documentation de cette route.
+6. Observer que la réponse **réelle** est un petit objet contenant l'ID, et non un produit complet. C'est bien ce qu'annonce la documentation de cette route.
 
 **À comprendre :** `requestBody` décrit l'entrée ; `responses` décrit la sortie. Les deux JSON peuvent avoir des structures différentes sans que ce soit une anomalie.
 
@@ -881,17 +889,17 @@ Ne pas confondre la collection `[{...},{...}]` et un objet `{...}` : c'est une d
 Pour PUT `/tagOA/{id}` :
 
 1. Utiliser l'ID du produit créé en 6.7.
-2. Observer le schéma `LearningProductReplace` : `name`, `price`, `stock`, `isActive` sont obligatoires.
+2. Lire la description et l'exemple du body : `name`, `price`, `stock` et `isActive` sont attendus pour un remplacement complet.
 3. Envoyer un état complet valide, puis vérifier le résultat avec GET `/tagOA/{id}`.
 
 Pour PATCH `/tagOA/{id}` :
 
-1. Observer le schéma `LearningProductPatch` : aucune propriété n'est obligatoirement présente dans le schéma.
+1. Observer l'exemple de body partiel `{"stock":4}` : il n'est pas nécessaire de fournir tous les champs.
 2. Envoyer `{"stock":2}` : la réponse est `200`.
 3. Faire un GET et vérifier que seul le stock a changé.
 4. Envoyer `{"description":null}` : la réponse est `200` et la description devient `null`.
 
-**À comprendre :** les deux routes manipulent la même entité, mais le **contrat d'entrée** n'est pas identique. C'est pourquoi les schémas `LearningProductReplace` et `LearningProductPatch` sont séparés.
+**À comprendre :** les deux routes manipulent la même entité, mais **leur description de requête et leur comportement** diffèrent. Les exemples OpenAPI les illustrent, sans créer de schémas réutilisables ni activer de validation serveur.
 
 ## 6.9 Exercice OpenAPI E — DELETE et le cas 204
 
@@ -1805,7 +1813,7 @@ Elle **ne contient pas** `content: new OA\JsonContent(...)`. C'est précisément
 
 ## 8.10 La documentation OpenAPI finale, par rapport à TagOA
 
-Dans TagOA, les schémas `LearningProductCreate` et `LearningProductReplace` sont décrits **manuellement par des attributs sur le contrôleur**. Dans Final, les DTO portent eux-mêmes leurs attributs de description :
+Dans TagOA, les corps JSON sont décrits directement dans les opérations avec `OA\JsonContent`, sans schémas manuels réutilisables. Dans Final, les DTO portent eux-mêmes leurs attributs de description :
 
 ```php
 #[OA\Schema(/* ... */)]
@@ -2048,7 +2056,7 @@ Ce chemin permet de comprendre un contrôleur sans s'arrêter à une simple expl
 
 La possibilité de saisir un body dépend du `requestBody` **documenté**. C'est la raison pour laquelle Basic possède déjà des attributs OA minimaux sur POST, PUT et PATCH. Un endpoint peut accepter un body en PHP sans que Swagger sache quels champs proposer si son contrat n'est pas renseigné.
 
-Pour le niveau TagOA, vérifier également que la référence `#/components/schemas/LearningProductCreate` (ou `Replace`, `Patch`) est bien résolue par le document OpenAPI.
+Pour le niveau TagOA, vérifier que `new OA\JsonContent(...)` contient bien `type: 'object'` et un `example`. Les schémas des DTO Verified et Final sont générés à partir de `new Model(...)` et restent disponibles même si la section globale **Schemas** est masquée dans Swagger UI.
 
 ## 11.3 « Mon GET retourne 404 »
 
