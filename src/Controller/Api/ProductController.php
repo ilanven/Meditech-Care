@@ -38,67 +38,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 #[Route('/api/learning/products', name: 'api_learning_products_', format: 'json')]
 
-// ───────────────────── COMPOSANTS OPENAPI DU NIVEAU 2 ─────────────────────
-// Ces schémas n'exécutent aucune vérification sur le serveur. Ce sont des
-// descriptions réutilisables publiées dans components/schemas de l'OpenAPI.
-#[OA\Schema(
-    schema: 'LearningProduct',
-    description: 'Produit visible dans le laboratoire : projection manuelle de l’entité Product.',
-    type: 'object',
-    required: ['id', 'name', 'description', 'price', 'stock', 'isActive'],
-    properties: [
-        new OA\Property(property: 'id', type: 'integer', readOnly: true, example: 5, description: 'Identifiant créé par Doctrine'),
-        new OA\Property(property: 'name', type: 'string', example: 'Clavier mécanique', description: 'Nom du produit'),
-        new OA\Property(property: 'description', type: 'string', nullable: true, example: 'Modèle AZERTY'),
-        new OA\Property(property: 'price', type: 'string', example: '49.90', description: 'Prix en chaîne décimale (DECIMAL Doctrine)'),
-        new OA\Property(property: 'stock', type: 'integer', example: 12),
-        new OA\Property(property: 'isActive', type: 'boolean', example: true),
-    ],
-)]
-#[OA\Schema(
-    schema: 'LearningProductCreate',
-    type: 'object',
-    description: 'Corps de POST décrit par OpenAPI ; les règles ne sont pas validées automatiquement par TagOA.',
-    required: ['name', 'price', 'stock'],
-    properties: [
-        new OA\Property(property: 'name', type: 'string', minLength: 2, maxLength: 150, example: 'Clavier mécanique'),
-        new OA\Property(property: 'description', type: 'string', nullable: true, example: 'AZERTY compact'),
-        new OA\Property(property: 'price', type: 'string', example: '49.90'),
-        new OA\Property(property: 'stock', type: 'integer', minimum: 0, example: 12),
-        new OA\Property(property: 'isActive', type: 'boolean', default: true, example: true),
-    ],
-)]
-#[OA\Schema(
-    schema: 'LearningProductReplace',
-    type: 'object',
-    description: 'Corps de PUT : l’état modifiable complet, description facultative (omise = null).',
-    required: ['name', 'price', 'stock', 'isActive'],
-    properties: [
-        new OA\Property(property: 'name', type: 'string', example: 'Nouveau clavier'),
-        new OA\Property(property: 'description', type: 'string', nullable: true, example: 'Sans fil'),
-        new OA\Property(property: 'price', type: 'string', example: '59.90'),
-        new OA\Property(property: 'stock', type: 'integer', example: 7),
-        new OA\Property(property: 'isActive', type: 'boolean', example: true),
-    ],
-)]
-#[OA\Schema(
-    schema: 'LearningProductPatch',
-    type: 'object',
-    description: 'Corps partiel de PATCH ; toutes les propriétés sont facultatives, description accepte null.',
-    properties: [
-        new OA\Property(property: 'name', type: 'string', example: 'Nouveau nom'),
-        new OA\Property(property: 'description', type: 'string', nullable: true, example: 'Nouvelle description'),
-        new OA\Property(property: 'price', type: 'string', example: '19.90'),
-        new OA\Property(property: 'stock', type: 'integer', example: 4),
-        new OA\Property(property: 'isActive', type: 'boolean', example: false),
-    ],
-)]
-#[OA\Schema(
-    schema: 'LearningProductNotFound',
-    type: 'object',
-    required: ['message'],
-    properties: [new OA\Property(property: 'message', type: 'string', example: 'Produit introuvable.')],
-)]
 final class ProductController extends AbstractController
 {
     // ======================================================================
@@ -315,7 +254,7 @@ final class ProductController extends AbstractController
                 description: 'Succès : toujours un tableau JSON, éventuellement vide lorsque la table ne contient aucun produit.',
                 content: new OA\JsonContent(
                     type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/LearningProduct'),
+                    items: new OA\Items(type: 'object'),
                     example: [[
                         'id' => 5,
                         'name' => 'Clavier mécanique',
@@ -361,12 +300,11 @@ final class ProductController extends AbstractController
             new OA\Response(
                 response: 200,
                 description: 'Un objet Product : les six champs publics sont renvoyés.',
-                content: new OA\JsonContent(ref: '#/components/schemas/LearningProduct'),
+                content: new OA\JsonContent(type: 'object'),
             ),
             new OA\Response(
                 response: 404,
                 description: 'L’URL a bien été reconnue, mais aucun produit ne possède cet id.',
-                content: new OA\JsonContent(ref: '#/components/schemas/LearningProductNotFound'),
             ),
         ],
     )]
@@ -385,8 +323,8 @@ final class ProductController extends AbstractController
 
     /**
      * TAG OA 3/6 — Un requestBody décrit le JSON d'entrée.
-     * Le schéma réutilisable vient de #[OA\Schema(schema: LearningProductCreate)]
-     * au-dessus de la classe ; Swagger l'affiche, le serveur ne le valide pas.
+     * La description JSON est écrite directement dans OA\JsonContent.
+     * Swagger l'affiche, le serveur ne valide pas ces règles automatiquement.
      */
     #[Route('/tagOA', name: 'tagoa_create', methods: ['POST'])]
     #[OA\Post(
@@ -402,7 +340,7 @@ final class ProductController extends AbstractController
             required: true,
             description: 'Objet JSON à insérer. Ne pas envoyer id : il est généré par la base.',
             content: new OA\JsonContent(
-                ref: '#/components/schemas/LearningProductCreate',
+                type: 'object',
                 example: [
                     'name' => 'Lampe de bureau', 'description' => 'Recharge USB-C',
                     'price' => '18.90', 'stock' => 5, 'isActive' => true,
@@ -461,7 +399,7 @@ final class ProductController extends AbstractController
             required: true,
             description: 'Fournir l’état complet modifiable, pas seulement les propriétés changées.',
             content: new OA\JsonContent(
-                ref: '#/components/schemas/LearningProductReplace',
+                type: 'object',
                 example: ['name' => 'Lampe blanche', 'description' => null, 'price' => '19.90', 'stock' => 7, 'isActive' => true],
             ),
         ),
@@ -474,7 +412,7 @@ final class ProductController extends AbstractController
                     properties: [new OA\Property(property: 'id', type: 'integer', example: 5), new OA\Property(property: 'message', type: 'string', example: 'Remplacé')],
                 ),
             ),
-            new OA\Response(response: 404, description: 'Aucun produit avec cet id', content: new OA\JsonContent(ref: '#/components/schemas/LearningProductNotFound')),
+            new OA\Response(response: 404, description: 'Aucun produit avec cet id'),
             new OA\Response(response: 400, description: 'Corps JSON malformé : erreur Symfony non normalisée ici'),
         ],
     )]
@@ -514,7 +452,7 @@ final class ProductController extends AbstractController
             required: true,
             description: 'Ne renseigner que les champs à modifier. description accepte null.',
             content: new OA\JsonContent(
-                ref: '#/components/schemas/LearningProductPatch',
+                type: 'object',
                 example: ['stock' => 4],
             ),
         ),
@@ -527,7 +465,7 @@ final class ProductController extends AbstractController
                     properties: [new OA\Property(property: 'id', type: 'integer', example: 5), new OA\Property(property: 'message', type: 'string', example: 'Modifié')],
                 ),
             ),
-            new OA\Response(response: 404, description: 'Produit absent', content: new OA\JsonContent(ref: '#/components/schemas/LearningProductNotFound')),
+            new OA\Response(response: 404, description: 'Produit absent'),
             new OA\Response(response: 400, description: 'JSON malformé : erreur Symfony non normalisée ici'),
         ],
     )]
@@ -573,7 +511,7 @@ final class ProductController extends AbstractController
         )],
         responses: [
             new OA\Response(response: 204, description: 'Suppression réussie, aucun contenu dans la réponse.'),
-            new OA\Response(response: 404, description: 'Le produit a déjà été supprimé ou n’a jamais existé.', content: new OA\JsonContent(ref: '#/components/schemas/LearningProductNotFound')),
+            new OA\Response(response: 404, description: 'Le produit a déjà été supprimé ou n’a jamais existé.'),
         ],
     )]
     public function tagOaDelete(int $id, ProductRepository $repository, EntityManagerInterface $em): Response
