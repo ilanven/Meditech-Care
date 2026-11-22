@@ -1,6 +1,6 @@
 # Atelier API Product — apprendre Symfony, OpenAPI et la validation en construisant 4 CRUD
 
-> **Projet :** Meditech Care — atelier pédagogique BTS SIO SLAM.  
+> **Projet :** Meditech Care — atelier pédagogique BTS SIO SLAM. 
 > **Pile du dépôt au moment de cet atelier :** PHP **8.4 minimum**, Symfony **8.1**, Doctrine ORM, Symfony Serializer, Symfony Validator, NelmioApiDocBundle et Swagger UI.  
 > **Principe :** un même objet métier `Product`, une même base, **quatre manières de réaliser les six opérations d'un CRUD**.  
 > **Outil de test principal :** Swagger UI (`/api/doc` si la configuration actuelle du projet est conservée).  
@@ -85,101 +85,54 @@ Chaque exercice contient quatre parties :
 
 # 2. Préparer le projet et les tests
 
-## 2.1 Fichiers du ZIP
+## 2.1 Mettre la base à jour
 
-Le ZIP contient les fichiers à remplacer, **avec leurs chemins d'origine** :
-
-```text
-src/
-├── Controller/Api/
-│   ├── ProductController.php          # Basic + TagOA + Verified
-│   └── ProductFinalController.php     # version finale
-├── Dto/Product/
-│   ├── ApiErrorOutput.php
-│   ├── CreateProductInput.php
-│   ├── PatchProductInput.php
-│   ├── ProductOutput.php
-│   └── ReplaceProductInput.php
-└── Service/
-    └── ProductWriter.php
-
-doc/
-└── ATELIER_API_PRODUCT.md
-```
-
-Les fichiers suivants existent déjà dans le projet et sont **conservés tels quels** :
-
-- `src/Entity/Product.php`, avec les propriétés Doctrine et les groupes `product:read` ;
-- `src/Repository/ProductRepository.php`, repository Doctrine ;
-- `src/DataFixtures/ProductFixtures.php`, jeu de dix produits de démonstration ;
-- `config/packages/nelmio_api_doc.yaml` et la route Swagger déjà en place.
-
-La structure de l'entité n'a pas changé : **aucune nouvelle migration n'est nécessaire pour cette refonte seule**.
-
-## 2.2 Vérifications de départ
-
-Depuis la racine du backend Symfony :
+Avant de commencer, mettre la base à jour :
 
 ```bash
-php -v
-php bin/console about
-php bin/console debug:router | grep -E 'api_(learning|final)_products'
+php bin/console doctrine:migrations:migrate
 ```
 
-Le fichier `composer.json` de la branche cible **PHP >= 8.4** et **Symfony 8.1**. Il déclare déjà Serializer, Validator, Doctrine, Nelmio et les fixtures. Ne pas réinstaller les dépendances qui sont déjà présentes.
-
-**Après remplacement**, `debug:router` doit montrer :
-
-- `api_learning_products_basic_index`, `..._basic_show`, `..._basic_create`, `..._basic_replace`, `..._basic_patch`, `..._basic_delete` ;
-- la même série pour `tagoa_` ;
-- la même série pour `verified_` ;
-- les six routes `api_final_products_*`.
-
-Les anciens endpoints `/api/learning/products/demo/...` **n'existent plus** ; ce n'est pas une régression, c'est le changement de parcours décidé pour cet atelier.
-
-## 2.3 Préparer un jeu de données sans effacer Meditech Care
+## 2.2 Préparer un jeu de données sans effacer Meditech Care
 
 `ProductFixtures.php` prépare dix produits (clavier, souris, écran, etc.) ; un tableau fixe permet de comparer les réponses d'un lancement à l'autre.
 
 **Attention à la commande des fixtures** :
 
 ```bash
-# Simulation, sans modification de la base :
-php bin/console doctrine:fixtures:load --group=ProductFixtures --append --dry-run
-
 # Ajouter le jeu de produits sans purger les tables existantes :
 php bin/console doctrine:fixtures:load --group=ProductFixtures --append
 ```
 
-`--group=ProductFixtures` **sélectionne** les fixtures exécutées ; il ne désactive pas la purge. C'est `--append` qui empêche la suppression préalable des données. Relancer la seconde commande ajoute de nouveaux produits : elle ne met pas à jour ceux qui existent déjà.
+`--group=ProductFixtures` **sélectionne** les fixtures exécutées ; il ne désactive pas la purge. C'est `--append` qui empêche la suppression préalable des données. Lancer la  commande ajoute de nouveaux produits : elle ne met pas à jour ceux qui existent déjà.
 
 Utiliser une **base de développement dédiée** est préférable. Les requêtes de Swagger sont réelles : `POST` ajoute des lignes et `DELETE` en retire. Elles ne s'exécutent pas dans un simulateur.
 
-## 2.4 Ouvrir Swagger et savoir lire l'écran
+## 2.3 Ouvrir Swagger et savoir lire l'écran
 
 1. Démarrer le serveur Symfony habituel.
-2. Ouvrir `/api/doc` (ou l'adresse déjà prévue dans le projet).
+2. Ouvrir `http://127.0.0.1:8000/api/doc` (ou l'adresse déjà prévue dans le projet).
 3. Repérer les groupes **Products / 1 — Basic**, **Products / 2 — TagOA**, **Products / 3 — Verified**, **Products / 4 — Final**.
 4. Déplier une opération, cliquer **Try it out**, compléter les champs, puis cliquer **Execute**.
 5. Examiner surtout **Request URL**, **Server response**, **Response code**, **Response body** et **Response headers**.
 
 Ces zones ne répondent pas toutes à la même question :
 
-| Zone Swagger | Signification |
-|---|---|
-| **Parameters** | Valeurs placées dans l'URL, par exemple le `{id}` d'un produit |
-| **Request body** | JSON que le client envoie au serveur |
-| **Example Value / Schema** | Exemple ou schéma *documenté* par OpenAPI, pas le résultat d'un appel |
-| **Request URL** | Adresse effectivement appelée |
-| **Response code** | Statut HTTP réellement retourné par cette exécution |
-| **Response body** | Contenu réellement renvoyé par le serveur |
-| **Response headers** | Métadonnées HTTP ; rechercher `content-type` ou `location` |
+| Zone Swagger               | Signification                                                            |
+| -------------------------- | ------------------------------------------------------------------------ |
+| **Parameters**             | Valeurs placées dans l'URL, par exemple le `{id}` d'un produit           |
+| **Request body**           | JSON que le client envoie au serveur (Pour un Post ou PATCh par exemple) |
+| **Example Value / Schema** | Exemple ou schéma *documenté* par OpenAPI, pas le résultat d'un appel    |
+| **Request URL**            | Adresse effectivement appelée                                            |
+| **Response code**          | Statut HTTP réellement retourné par cette exécution                      |
+| **Response body**          | Contenu réellement renvoyé par le serveur                                |
+| **Response headers**       | Métadonnées HTTP ; rechercher `content-type` ou `location`               |
 
 **Ne pas confondre une réponse documentée `201` avec une réponse effectivement reçue `201`.** Si une exécution renvoie `500`, la documentation affichée ne fait pas disparaître cette erreur : elle indique simplement ce que le contrat prévoyait.
 
 La section globale **Schemas** en bas de Swagger UI est masquée par `defaultModelsExpandDepth: -1` dans `config/packages/nelmio_api_doc.yaml`. Cela ne supprime pas les schémas des DTO : Nelmio continue à les générer et à les utiliser dans les opérations Verified et Final.
 
-## 2.5 Garder une trace des tests
+## 2.4 Garder une trace des tests
 
 Noter, pour le produit créé en Basic :
 
@@ -250,13 +203,13 @@ Symfony compose les deux attributs :
 
 ### Décomposer `requirements: ['id' => '\d+']`
 
-| Morceau | Ce que cela signifie |
-|---|---|
-| `requirements` | Option de `#[Route]` fixant des conditions pour les variables du chemin |
-| `[...]` | Tableau associatif PHP |
-| `'id'` | Nom du paramètre de route à contrôler ; il correspond à `{id}` |
-| `=>` | Sépare la clé de sa valeur dans le tableau PHP |
-| `'\d+'` | Expression régulière : `\d` = chiffre ; `+` = au moins une occurrence |
+| Morceau        | Ce que cela signifie                                                                                    |
+| -------------- | ------------------------------------------------------------------------------------------------------- |
+| `requirements` | Option de `#[Route]` fixant des conditions pour les variables du chemin                                 |
+| `[...]`        | Tableau associatif PHP                                                                                  |
+| `'id'`         | Nom du paramètre de route à contrôler ; il correspond à `{id}`                                          |
+| `=>`           | Sépare la clé de sa valeur dans le tableau PHP                                                          |
+| `'\d+'`        | Expression régulière : `\d` = chiffre ; `+` = au moins une occurrence (Un nombre avec que des chiffres) |
 
 Ainsi, `/basic/42` correspond à la route, mais `/basic/abc` ne lui correspond pas. **Une URL non reconnue provoque un 404 au niveau du routeur**, avant même d'entrer dans `basicShow()`.
 
@@ -756,7 +709,7 @@ Une opération peut documenter plusieurs réponses : par exemple, `GET /{id}` pr
 
 ## 6.4 Les schémas : décrire la structure des objets
 
-Dans la version actuelle du niveau TagOA, les descriptions JSON sont écrites **directement dans les opérations** avec `OA\JsonContent` : il n'y a plus de schémas nommés `LearningProduct...` ni de références `#/components/schemas/LearningProduct...`.
+Dans la version actuelle du niveau TagOA, les descriptions JSON sont écrites **directement dans les opérations** avec `OA\JsonContent` .
 
 Par exemple, le POST décrit son entrée avec un objet JSON et un exemple :
 
@@ -799,7 +752,7 @@ new OA\Property(property: 'stock', type: 'integer', minimum: 0, example: 12)
 ```
 
 - `property` : nom du champ dans l'objet JSON ;
-- `type` : type JSON attendu ;
+- `type` : type JSON attendu (integer, string...) ;
 - `minimum` : règle documentaire sur une valeur numérique ;
 - `example` : valeur que Swagger peut proposer.
 

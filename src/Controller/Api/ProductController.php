@@ -54,7 +54,7 @@ final class ProductController extends AbstractController
     public function basicIndex(ProductRepository $repository): JsonResponse
     {
         $result = [];
-        foreach ($repository->findBy([], ['id' => 'ASC']) as $product) {
+        foreach ($repository->findAll() as $product) {
             $result[] = [
                 'id' => $product->getId(),
                 'name' => $product->getName(),
@@ -62,7 +62,7 @@ final class ProductController extends AbstractController
                 'price' => $product->getPrice(),
                 'stock' => $product->getStock(),
                 'isActive' => $product->isActive(),
-            ];
+            ];  // Ajoute un nouveau tableau associatif au tableau $result à chaque foreach()
         }
 
         // AbstractController::json() encode le tableau PHP en JSON (statut 200).
@@ -262,7 +262,7 @@ final class ProductController extends AbstractController
                         'price' => '49.90',
                         'stock' => 12,
                         'isActive' => true,
-                    ]],
+                    ],['id' => '...']],
                 ),
             ),
         ],
