@@ -20,7 +20,7 @@ Installer sur sa machine :
 - **Git**, pour récupérer le code ;
 - **PHP 8.4 ou plus récent**, avec les extensions requises par le projet ;
 - **Composer**, pour installer les dépendances PHP ;
-- **MySQL**, ou un autre service de BDD (et adapter `DATABASE_URL` du .env) ;
+- **MySQL**, ou un autre service de BDD (et adapter `DATABASE_URL` du .env). Utilisation du moteur InnoDB au lieu de MyISAM ;
 - **Symfony CLI** (recommandé), pour lancer facilement le serveur local.
 
 ## 2. Installer le projet

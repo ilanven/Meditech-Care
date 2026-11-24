@@ -51,8 +51,12 @@ final class ProductFinalController extends AbstractController
                     type: 'array',
                     items: new OA\Items(ref: new Model(type: ProductOutput::class)),
                     example: [[
-                        'id' => 1, 'name' => 'Clavier mécanique', 'description' => 'AZERTY compact',
-                        'price' => '49.90', 'stock' => 12, 'isActive' => true,
+                        'id' => 1,
+                        'name' => 'Clavier mécanique',
+                        'description' => 'AZERTY compact',
+                        'price' => '49.90',
+                        'stock' => 12,
+                        'isActive' => true,
                     ]],
                 ),
             ),
@@ -71,16 +75,22 @@ final class ProductFinalController extends AbstractController
         description: 'Chercher un produit par son identifiant. La route exige des chiffres (requirements) ; le repository vérifie ensuite l’existence de la ligne. Une ressource trouvée est projetée vers ProductOutput. Une ressource absente reçoit une erreur JSON structurée PRODUCT_NOT_FOUND.',
         tags: ['Products / 4 — Final'],
         parameters: [new OA\Parameter(
-            name: 'id', in: 'path', required: true,
+            name: 'id',
+            in: 'path',
+            required: true,
             description: 'Identifiant positif d’un produit existant, récupérable via GET collection.',
-            schema: new OA\Schema(type: 'integer', minimum: 1), example: 1,
+            schema: new OA\Schema(type: 'integer', minimum: 1),
+            example: 1,
         )],
         responses: [
             new OA\Response(response: 200, description: 'Objet ProductOutput correspondant à cet id.', content: new OA\JsonContent(ref: new Model(type: ProductOutput::class))),
             new OA\Response(
-                response: 404, description: 'Aucune ligne ne correspond à cet id.',
+                response: 404,
+                description: 'Aucune ligne ne correspond à cet id.',
                 content: new OA\JsonContent(ref: new Model(type: ApiErrorOutput::class), example: [
-                    'code' => 'PRODUCT_NOT_FOUND', 'message' => 'Produit introuvable.', 'details' => [],
+                    'code' => 'PRODUCT_NOT_FOUND',
+                    'message' => 'Produit introuvable.',
+                    'details' => [],
                 ]),
             ),
         ],
@@ -110,16 +120,19 @@ final class ProductFinalController extends AbstractController
         ),
         responses: [
             new OA\Response(
-                response: 201, description: 'Produit créé. L’en-tête Location indique son URL de lecture.',
+                response: 201,
+                description: 'Produit créé. L’en-tête Location indique son URL de lecture.',
                 headers: [new OA\Header(header: 'Location', description: 'Chemin du GET unitaire de la ressource créée', schema: new OA\Schema(type: 'string', example: '/api/final/products/42'))],
                 content: new OA\JsonContent(ref: new Model(type: ProductOutput::class)),
             ),
             new OA\Response(response: 400, description: 'JSON invalide, non objet ou valeurs JSON de types incorrects.', content: new OA\JsonContent(ref: new Model(type: ApiErrorOutput::class))),
             new OA\Response(response: 415, description: 'Mauvais Content-Type (utiliser application/json).', content: new OA\JsonContent(ref: new Model(type: ApiErrorOutput::class))),
             new OA\Response(
-                response: 422, description: 'Champ requis absent, inconnu ou violation de contraintes (ex. stock négatif).',
+                response: 422,
+                description: 'Champ requis absent, inconnu ou violation de contraintes (ex. stock négatif).',
                 content: new OA\JsonContent(ref: new Model(type: ApiErrorOutput::class), example: [
-                    'code' => 'VALIDATION_FAILED', 'message' => 'Les données ne respectent pas les contraintes.',
+                    'code' => 'VALIDATION_FAILED',
+                    'message' => 'Les données ne respectent pas les contraintes.',
                     'details' => [['field' => 'stock', 'message' => 'Le stock ne peut pas être négatif.']],
                 ]),
             ),
@@ -149,8 +162,12 @@ final class ProductFinalController extends AbstractController
         description: 'Remplacer intégralement les champs modifiables d’un produit existant, sans changer son id. name, price, stock et isActive sont obligatoires. Si description est omise, elle devient null : c’est un remplacement, pas une modification partielle. Le serveur ne crée pas un produit si l’id est absent : il répond 404. Les valeurs sont contrôlées avant toute écriture.',
         tags: ['Products / 4 — Final'],
         parameters: [new OA\Parameter(
-            name: 'id', in: 'path', required: true, description: 'Identifiant du produit à remplacer, déjà présent dans la base.',
-            schema: new OA\Schema(type: 'integer', minimum: 1), example: 1,
+            name: 'id',
+            in: 'path',
+            required: true,
+            description: 'Identifiant du produit à remplacer, déjà présent dans la base.',
+            schema: new OA\Schema(type: 'integer', minimum: 1),
+            example: 1,
         )],
         requestBody: new OA\RequestBody(
             required: true,
@@ -196,8 +213,12 @@ final class ProductFinalController extends AbstractController
         description: 'Envoyer un objet JSON non vide contenant seulement les champs à changer. Un champ absent conserve sa valeur ; description:null efface la description. En revanche, name:null, price:null, stock:null et isActive:null sont refusés. Le contrôleur conserve les noms des clés présentes puis les fournit au service ProductWriter. Les contraintes Assert sont appliquées aux nouvelles valeurs.',
         tags: ['Products / 4 — Final'],
         parameters: [new OA\Parameter(
-            name: 'id', in: 'path', required: true, description: 'Identifiant du produit à modifier.',
-            schema: new OA\Schema(type: 'integer', minimum: 1), example: 1,
+            name: 'id',
+            in: 'path',
+            required: true,
+            description: 'Identifiant du produit à modifier.',
+            schema: new OA\Schema(type: 'integer', minimum: 1),
+            example: 1,
         )],
         requestBody: new OA\RequestBody(
             required: true,
@@ -210,9 +231,11 @@ final class ProductFinalController extends AbstractController
             new OA\Response(response: 404, description: 'Produit introuvable.', content: new OA\JsonContent(ref: new Model(type: ApiErrorOutput::class))),
             new OA\Response(response: 415, description: 'Content-Type non pris en charge.', content: new OA\JsonContent(ref: new Model(type: ApiErrorOutput::class))),
             new OA\Response(
-                response: 422, description: 'Objet vide, champ inconnu, null interdit ou violation Assert.',
+                response: 422,
+                description: 'Objet vide, champ inconnu, null interdit ou violation Assert.',
                 content: new OA\JsonContent(ref: new Model(type: ApiErrorOutput::class), example: [
-                    'code' => 'NULL_NOT_ALLOWED', 'message' => 'Le champ name ne peut pas être null.',
+                    'code' => 'NULL_NOT_ALLOWED',
+                    'message' => 'Le champ name ne peut pas être null.',
                     'details' => [['field' => 'name', 'message' => 'Valeur null interdite.']],
                 ]),
             ),
@@ -250,8 +273,12 @@ final class ProductFinalController extends AbstractController
         description: 'Supprimer définitivement une ressource existante. ProductWriter délègue remove() et flush() à Doctrine. Une suppression réussie retourne 204 No Content, sans JSON ni représentation du produit. Un id absent reçoit une erreur JSON 404. Répéter DELETE sur cet id donnera donc 404 dans cette convention.',
         tags: ['Products / 4 — Final'],
         parameters: [new OA\Parameter(
-            name: 'id', in: 'path', required: true, description: 'Identifiant à supprimer.',
-            schema: new OA\Schema(type: 'integer', minimum: 1), example: 1,
+            name: 'id',
+            in: 'path',
+            required: true,
+            description: 'Identifiant à supprimer.',
+            schema: new OA\Schema(type: 'integer', minimum: 1),
+            example: 1,
         )],
         responses: [
             new OA\Response(response: 204, description: 'Supprimé. Body strictement absent.'),
@@ -332,7 +359,9 @@ final class ProductFinalController extends AbstractController
             foreach (['name', 'price', 'stock', 'isActive'] as $field) {
                 if (array_key_exists($field, $data) && $data[$field] === null) {
                     return $this->error(
-                        'NULL_NOT_ALLOWED', "Le champ $field ne peut pas être null.", 422,
+                        'NULL_NOT_ALLOWED',
+                        "Le champ $field ne peut pas être null.",
+                        422,
                         [['field' => $field, 'message' => 'Valeur null interdite.']],
                     );
                 }
@@ -362,9 +391,6 @@ final class ProductFinalController extends AbstractController
             $input = $serializer->deserialize($request->getContent(), $type, 'json');
         } catch (SerializerExceptionInterface | \TypeError | \ValueError) {
             return $this->error('INVALID_TYPES', 'Impossible de convertir les données en DTO.', 400);
-        }
-        if (!$input instanceof CreateProductInput && !$input instanceof ReplaceProductInput && !$input instanceof PatchProductInput) {
-            return $this->error('INVALID_TYPES', 'Le corps ne correspond pas au DTO attendu.', 400);
         }
 
         $violations = $validator->validate($input);

@@ -140,7 +140,8 @@ final class ProductController extends AbstractController
         summary: 'Basic — remplacer un produit',
         tags: ['Products / 1 — Basic'],
         requestBody: new OA\RequestBody(required: true, content: new OA\JsonContent(
-            type: 'object', required: ['name', 'price', 'stock', 'isActive'],
+            type: 'object',
+            required: ['name', 'price', 'stock', 'isActive'],
             properties: [
                 new OA\Property(property: 'name', type: 'string', example: 'Lampe LED'),
                 new OA\Property(property: 'description', type: 'string', nullable: true, example: 'Blanche'),
@@ -179,7 +180,8 @@ final class ProductController extends AbstractController
         summary: 'Basic — modifier quelques champs',
         tags: ['Products / 1 — Basic'],
         requestBody: new OA\RequestBody(required: true, content: new OA\JsonContent(
-            type: 'object', properties: [
+            type: 'object',
+            properties: [
                 new OA\Property(property: 'name', type: 'string', example: 'Lampe plus puissante'),
                 new OA\Property(property: 'description', type: 'string', nullable: true),
                 new OA\Property(property: 'price', type: 'string', example: '20.90'),
@@ -244,9 +246,9 @@ final class ProductController extends AbstractController
     #[OA\Get(
         summary: 'Lister les produits — contrat OpenAPI détaillé',
         description: 'Récupérer la collection entière des produits, classée par identifiant croissant. '
-            .'Le contrôleur lit les entités avec Doctrine, sélectionne manuellement six champs '
-            .'et les encode en JSON. Aucun filtre ni pagination dans ce laboratoire. '
-            .'La description OpenAPI informe le client ; elle ne modifie pas le résultat.',
+            . 'Le contrôleur lit les entités avec Doctrine, sélectionne manuellement six champs '
+            . 'et les encode en JSON. Aucun filtre ni pagination dans ce laboratoire. '
+            . 'La description OpenAPI informe le client ; elle ne modifie pas le résultat.',
         tags: ['Products / 2 — TagOA'],
         responses: [
             new OA\Response(
@@ -262,7 +264,7 @@ final class ProductController extends AbstractController
                         'price' => '49.90',
                         'stock' => 12,
                         'isActive' => true,
-                    ],['id' => '...']],
+                    ], ['id' => '...']],
                 ),
             ),
         ],
@@ -272,9 +274,12 @@ final class ProductController extends AbstractController
         $result = [];
         foreach ($repository->findBy([], ['id' => 'ASC']) as $product) {
             $result[] = [
-                'id' => $product->getId(), 'name' => $product->getName(),
-                'description' => $product->getDescription(), 'price' => $product->getPrice(),
-                'stock' => $product->getStock(), 'isActive' => $product->isActive(),
+                'id' => $product->getId(),
+                'name' => $product->getName(),
+                'description' => $product->getDescription(),
+                'price' => $product->getPrice(),
+                'stock' => $product->getStock(),
+                'isActive' => $product->isActive(),
             ];
         }
         return $this->json($result);
@@ -285,15 +290,18 @@ final class ProductController extends AbstractController
     #[OA\Get(
         summary: 'Lire un produit identifié par son id',
         description: 'Recevoir un produit par son identifiant numérique. La contrainte de route '
-            .'requirements empêche de faire correspondre une URL contenant des lettres. '
-            .'En revanche, seul le Repository vérifie si cet identifiant existe. '
-            .'Un id valide dans l’URL, mais absent de la base, reçoit 404.',
+            . 'requirements empêche de faire correspondre une URL contenant des lettres. '
+            . 'En revanche, seul le Repository vérifie si cet identifiant existe. '
+            . 'Un id valide dans l’URL, mais absent de la base, reçoit 404.',
         tags: ['Products / 2 — TagOA'],
         parameters: [
             new OA\Parameter(
-                name: 'id', in: 'path', required: true,
+                name: 'id',
+                in: 'path',
+                required: true,
                 description: 'Identifiant positif de la ressource cherchée, à relever via GET collection.',
-                schema: new OA\Schema(type: 'integer', minimum: 1), example: 5,
+                schema: new OA\Schema(type: 'integer', minimum: 1),
+                example: 5,
             ),
         ],
         responses: [
@@ -315,9 +323,12 @@ final class ProductController extends AbstractController
             return $this->json(['message' => 'Produit introuvable.'], 404);
         }
         return $this->json([
-            'id' => $product->getId(), 'name' => $product->getName(),
-            'description' => $product->getDescription(), 'price' => $product->getPrice(),
-            'stock' => $product->getStock(), 'isActive' => $product->isActive(),
+            'id' => $product->getId(),
+            'name' => $product->getName(),
+            'description' => $product->getDescription(),
+            'price' => $product->getPrice(),
+            'stock' => $product->getStock(),
+            'isActive' => $product->isActive(),
         ]);
     }
 
@@ -330,11 +341,11 @@ final class ProductController extends AbstractController
     #[OA\Post(
         summary: 'Créer un produit — démonstration requestBody et 201',
         description: 'Envoyer un objet JSON représentant un nouveau produit. '
-            .'Le serveur attribue lui-même l’identifiant et enregistre la nouvelle entité avec Doctrine. '
-            .'name, price et stock sont attendus ; description est facultative (null par défaut), '
-            .'isActive vaut true par défaut. Le prix est une chaîne, par exemple "49.90". '
-            .'Attention : ce niveau documente le contrat, mais N’ACTIVE PAS les contrôles Validator. '
-            .'Pour observer les rejets propres des données invalides, utiliser Verified ou Final.',
+            . 'Le serveur attribue lui-même l’identifiant et enregistre la nouvelle entité avec Doctrine. '
+            . 'name, price et stock sont attendus ; description est facultative (null par défaut), '
+            . 'isActive vaut true par défaut. Le prix est une chaîne, par exemple "49.90". '
+            . 'Attention : ce niveau documente le contrat, mais N’ACTIVE PAS les contrôles Validator. '
+            . 'Pour observer les rejets propres des données invalides, utiliser Verified ou Final.',
         tags: ['Products / 2 — TagOA'],
         requestBody: new OA\RequestBody(
             required: true,
@@ -342,8 +353,11 @@ final class ProductController extends AbstractController
             content: new OA\JsonContent(
                 type: 'object',
                 example: [
-                    'name' => 'Lampe de bureau', 'description' => 'Recharge USB-C',
-                    'price' => '18.90', 'stock' => 5, 'isActive' => true,
+                    'name' => 'Lampe de bureau',
+                    'description' => 'Recharge USB-C',
+                    'price' => '18.90',
+                    'stock' => 5,
+                    'isActive' => true,
                 ],
             ),
         ),
@@ -352,7 +366,8 @@ final class ProductController extends AbstractController
                 response: 201,
                 description: 'Création effectuée. La réponse contient le nouvel identifiant, sans inclure tout le produit.',
                 content: new OA\JsonContent(
-                    type: 'object', required: ['id', 'message'],
+                    type: 'object',
+                    required: ['id', 'message'],
                     properties: [
                         new OA\Property(property: 'id', type: 'integer', example: 42),
                         new OA\Property(property: 'message', type: 'string', example: 'Créé'),
@@ -384,16 +399,19 @@ final class ProductController extends AbstractController
     #[OA\Put(
         summary: 'Remplacer les champs modifiables d’un produit',
         description: 'PUT reçoit le nouvel état complet des champs modifiables d’un produit existant. '
-            .'Les champs name, price, stock et isActive sont attendus à chaque remplacement. '
-            .'description peut être absente, auquel cas sa valeur devient null. '
-            .'L’identifiant reste celui présent dans le chemin. '
-            .'Doctrine suit déjà l’entité obtenue par le Repository : flush() suffit, sans persist(). '
-            .'Les contraintes documentées ici ne sont pas validées par ce contrôleur de niveau 2.',
+            . 'Les champs name, price, stock et isActive sont attendus à chaque remplacement. '
+            . 'description peut être absente, auquel cas sa valeur devient null. '
+            . 'L’identifiant reste celui présent dans le chemin. '
+            . 'Doctrine suit déjà l’entité obtenue par le Repository : flush() suffit, sans persist(). '
+            . 'Les contraintes documentées ici ne sont pas validées par ce contrôleur de niveau 2.',
         tags: ['Products / 2 — TagOA'],
         parameters: [new OA\Parameter(
-            name: 'id', in: 'path', required: true,
+            name: 'id',
+            in: 'path',
+            required: true,
             description: 'Identifiant du produit à remplacer. Il doit déjà exister.',
-            schema: new OA\Schema(type: 'integer', minimum: 1), example: 5,
+            schema: new OA\Schema(type: 'integer', minimum: 1),
+            example: 5,
         )],
         requestBody: new OA\RequestBody(
             required: true,
@@ -408,7 +426,8 @@ final class ProductController extends AbstractController
                 response: 200,
                 description: 'Remplacement appliqué à la ressource existante.',
                 content: new OA\JsonContent(
-                    type: 'object', required: ['id', 'message'],
+                    type: 'object',
+                    required: ['id', 'message'],
                     properties: [new OA\Property(property: 'id', type: 'integer', example: 5), new OA\Property(property: 'message', type: 'string', example: 'Remplacé')],
                 ),
             ),
@@ -438,15 +457,18 @@ final class ProductController extends AbstractController
     #[OA\Patch(
         summary: 'Mettre à jour uniquement les champs présents dans le JSON',
         description: 'PATCH permet de ne modifier qu’une partie de la ressource. '
-            .'Envoyer {"stock":4} ne touche pas au nom, au prix ni à la description. '
-            .'Envoyer {"description":null} efface explicitement la description. '
-            .'Le code distingue présence et absence grâce à array_key_exists(). '
-            .'Ce contrôleur n’applique pas encore la validation des types ni la liste blanche stricte.',
+            . 'Envoyer {"stock":4} ne touche pas au nom, au prix ni à la description. '
+            . 'Envoyer {"description":null} efface explicitement la description. '
+            . 'Le code distingue présence et absence grâce à array_key_exists(). '
+            . 'Ce contrôleur n’applique pas encore la validation des types ni la liste blanche stricte.',
         tags: ['Products / 2 — TagOA'],
         parameters: [new OA\Parameter(
-            name: 'id', in: 'path', required: true,
+            name: 'id',
+            in: 'path',
+            required: true,
             description: 'Identifiant de la ressource à modifier partiellement.',
-            schema: new OA\Schema(type: 'integer', minimum: 1), example: 5,
+            schema: new OA\Schema(type: 'integer', minimum: 1),
+            example: 5,
         )],
         requestBody: new OA\RequestBody(
             required: true,
@@ -461,7 +483,8 @@ final class ProductController extends AbstractController
                 response: 200,
                 description: 'Mise à jour enregistrée. Seules les propriétés envoyées sont modifiées.',
                 content: new OA\JsonContent(
-                    type: 'object', required: ['id', 'message'],
+                    type: 'object',
+                    required: ['id', 'message'],
                     properties: [new OA\Property(property: 'id', type: 'integer', example: 5), new OA\Property(property: 'message', type: 'string', example: 'Modifié')],
                 ),
             ),
@@ -500,14 +523,17 @@ final class ProductController extends AbstractController
     #[OA\Delete(
         summary: 'Supprimer définitivement un produit',
         description: 'Retirer la ligne correspondant à cet id de la table Product. '
-            .'Pour un produit existant, le serveur répond 204 sans corps JSON. '
-            .'Ne pas déclarer de content dans OA\\Response(204) : une réponse 204 est vide. '
-            .'Une seconde suppression sur le même id renvoie 404, car la ligne n’existe plus.',
+            . 'Pour un produit existant, le serveur répond 204 sans corps JSON. '
+            . 'Ne pas déclarer de content dans OA\\Response(204) : une réponse 204 est vide. '
+            . 'Une seconde suppression sur le même id renvoie 404, car la ligne n’existe plus.',
         tags: ['Products / 2 — TagOA'],
         parameters: [new OA\Parameter(
-            name: 'id', in: 'path', required: true,
+            name: 'id',
+            in: 'path',
+            required: true,
             description: 'Identifiant existant à supprimer.',
-            schema: new OA\Schema(type: 'integer', minimum: 1), example: 5,
+            schema: new OA\Schema(type: 'integer', minimum: 1),
+            example: 5,
         )],
         responses: [
             new OA\Response(response: 204, description: 'Suppression réussie, aucun contenu dans la réponse.'),
@@ -551,7 +577,8 @@ final class ProductController extends AbstractController
      */
     #[Route('/verified/{id}', name: 'verified_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     #[OA\Get(
-        summary: 'Verified — GET avec DTO de sortie', tags: ['Products / 3 — Verified'],
+        summary: 'Verified — GET avec DTO de sortie',
+        tags: ['Products / 3 — Verified'],
         responses: [
             new OA\Response(response: 200, description: 'Produit transformé en ProductOutput', content: new OA\JsonContent(ref: new Model(type: ProductOutput::class))),
             new OA\Response(response: 404, description: 'Produit introuvable'),
@@ -605,9 +632,6 @@ final class ProductController extends AbstractController
         } catch (SerializerExceptionInterface | \TypeError | \ValueError) {
             return $this->json(['code' => 'INVALID_TYPES'], 400);
         }
-        if (!$input instanceof CreateProductInput) {
-            return $this->json(['code' => 'INVALID_TYPES'], 400);
-        }
 
         // Les Assert\... ne sont exécutés QU'À PARTIR de cette ligne.
         $violations = $validator->validate($input);
@@ -631,7 +655,8 @@ final class ProductController extends AbstractController
      */
     #[Route('/verified/{id}', name: 'verified_replace', requirements: ['id' => '\d+'], methods: ['PUT'])]
     #[OA\Put(
-        summary: 'Verified — PUT avec MapRequestPayload', tags: ['Products / 3 — Verified'],
+        summary: 'Verified — PUT avec MapRequestPayload',
+        tags: ['Products / 3 — Verified'],
         requestBody: new OA\RequestBody(required: true, content: new OA\JsonContent(ref: new Model(type: ReplaceProductInput::class))),
         responses: [
             new OA\Response(response: 200, description: 'Produit remplacé', content: new OA\JsonContent(ref: new Model(type: ProductOutput::class))),
@@ -706,9 +731,6 @@ final class ProductController extends AbstractController
         try {
             $input = $serializer->deserialize($request->getContent(), PatchProductInput::class, 'json');
         } catch (SerializerExceptionInterface | \TypeError | \ValueError) {
-            return $this->json(['code' => 'INVALID_TYPES'], 400);
-        }
-        if (!$input instanceof PatchProductInput) {
             return $this->json(['code' => 'INVALID_TYPES'], 400);
         }
         $violations = $validator->validate($input);
