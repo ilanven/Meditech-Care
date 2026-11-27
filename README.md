@@ -45,7 +45,7 @@ Dupliquer le fichier **`.env.example`** et le renommer **`.env.local`** à la ra
 Exemple avec MySQL :
 
 ```dotenv
-DATABASE_URL="postgresql://utilisateur:mot_de_passe@127.0.0.1:5432/meditech_care?serverVersion=16&charset=utf8"
+DATABASE_URL="mysql://utilisateur:mot_de_passe@127.0.0.1:5432/meditech_care?serverVersion=16&charset=utf8"
 ```
 
 Adapter l'utilisateur, le mot de passe et la version du serveur MySQL. S'assurer que MySQL est démarré, puis créer la base et appliquer les migrations :
